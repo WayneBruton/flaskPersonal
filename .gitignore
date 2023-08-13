@@ -1,0 +1,5 @@
+# add venv folder and .env
+venv/
+.env
+```
+

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Start Page{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="margin-top: 45px;">
+	<div class="row">
+		<div class="col-2"></div>
+		<div class="col-8">
+			<h1 class="text-center mainH1" style="margin-top: 30px; color: white">About me</h1>
+			<div style="display:flex; justify-content: center;" class="meImg">
+				<img src="{{ url_for('static', filename='images/me.jpeg') }}" class="img-fluid text-center mainH1"
+				     style="border-radius: 5%; margin-top: 30px; margin-bottom: 30px;">
+			</div>
+			<p class="text-center" style="color: white"><strong>This is a simple biography / synopses of my life to
+				date.</strong></p>
+			<br/>
+			<h4 class="text-center" style="color: white"><strong>Early life</strong></h4>
+			<br/>
+			<p class="text-center" style="color: white">I was born on 30 April 1966.during my early years we moved a lot
+				due to my father's business needs and I effectively lived in Johannesburg, East London, Durban, Cape
+				Town and again Johannesburg, all by the time I started High School.</p>
+			<p class="text-center" style="color: white">In High School I went to boarding school, namely <a
+					href="https://queenscollege.co.za" target="_blank">Queen's College</a> in the Eastern Cape. It is
+				there I met some of the best friends anyone could have. After matriculating at the end of 1983, I went
+				nd did my national service for two years. Once again, I met great buddies, one of whom is possibly the
+				best mate any guy could have and now lives in Canada.</p>
+			<p class="text-center" style="color: white">After leaving the army, what to do?</p>
+			<p class="text-center" style="color: white">I decided to go to university and study a BCom. I went to the <a
+					href="https://www.wits.ac.za/" target="_blank">University of the Witwatersrand (WITS)</a> and
+				studied for three years. I was not the best student, but I did pass and get my degree. Thereafter, I
+				completed my Honours degree in finance at The university of South Africa (Unisa).</p>
+			
+			<br/>
+			<h4 class="text-center" style="color: white"><strong>Work</strong></h4>
+			<br/>
+			<p class="text-center" style="color: white">I spent many years working for various companies in the role of
+				Financial Manager.</p>
+			<p class="text-center" style="color: white">I was never really happy or satisfied but then oneday quite by
+				accident I discovered programming (Or Coding). To be continued....</p>
+		
+		</div>
+		<div class="col-2"></div>
+	</div>
+</div>
+{% endblock %}

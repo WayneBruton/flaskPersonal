@@ -1,0 +1,140 @@
+.home {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-position: center;
+}
+
+.homeDiv {
+	background-color: rgba(0, 0, 0, 0.4);
+	height: 100vh;
+	color: white;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+}
+
+.enterBtn {
+	background-color: rgba(255, 255, 255, 0.1);
+	color: white;
+	text-align: center;
+	font-size: 16px;
+	margin-top: 20px;
+
+	cursor: pointer;
+	width: 200px;
+}
+
+.enterBtn:hover {
+	background-color: rgba(255, 255, 255, 0.2);
+	color: white;
+	transform: translateX(3px);
+transform: translateY(3px);
+}
+
+.body {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	background: #000;
+}
+
+.insideDiv:hover {
+transform: translateX(3px);
+transform: translateY(3px);
+}
+
+.mainH1 {
+	font-size: 50px;
+	margin-top: 0;
+	transition: 0.5s;
+	animation: move-left-right-first 1s linear;
+}
+
+.meImg {
+  # transform: rotateY(150deg);
+  animation: rotate 2s linear 1;
+  # transition: rotateX(15deg);
+}
+
+.sudokuRow {
+	display: flex;
+	justify-content: center;
+}
+.sudokuCell {
+	width: 50px;
+	height: 50px;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 30px;
+	background-color: white;
+}
+
+.sBtn {
+    width: 50px;
+	height: 50px;
+	padding: 1;
+	color: white;
+
+	background-color: transparent;
+}
+
+.sudoku36 {
+ border-right: 2px solid black;
+}
+
+.sudoku47 {
+ border-left: 2px solid black;
+}
+
+.sudoku63 {
+ border-bottom: 2px solid black;
+}
+
+.sudoku74 {
+ border-top: 2px solid black;
+}
+
+
+
+@keyframes rotate {
+  0% {
+	transform: rotateY(0deg);
+  }
+
+  100% {
+	transform: rotateY(150deg);
+  }
+}
+
+
+@keyframes move-left-right-first {
+  0% {
+    transform: translateX(-300%);
+
+
+
+  }
+  25% {
+    transform: translateX(-225%);
+
+
+  }
+  50% {
+    transform: translateX(-150%);
+
+
+  }
+  75% {
+    transform: translateX(-75%);
+
+
+  }
+  100% {
+    transform: translateX(0%);
+
+
+  }
+}

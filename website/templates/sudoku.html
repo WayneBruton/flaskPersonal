@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+
+{% block title %}Sudoku{% endblock %}
+
+{% block content %}
+<br/>
+<br/>
+<br/>
+<h1 class="text-center" style="color: white;">Sudoku Solver</h1>
+<br/>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<p class="text-center" style="color: white;">This is a simple Sudoku Solver. Simply key in the set numbers and
+			click "Solve the puzzle". Click a square, and it increments from blank to 1 to 2 to 3 etc. Depending on the
+			number of
+			clicks. It goes from 9 to blank and the cycle repeats itself. It is a simple recursion algorithm and runs
+			very quickly.
+		</p>
+	</div>
+	<div class="col-2"></div>
+</div>
+<br/>
+
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn00" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn01" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn02" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn03" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn04" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn05" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn06" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn07" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn08" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn10" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn11" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn12" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn13" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn14" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn15" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn16" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn17" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn18" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell sudoku63">
+				<button class="sBtn" id="btn20" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku63">
+				<button class="sBtn" id="btn21" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36  sudoku63">
+				<button class="sBtn" id="btn22" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47  sudoku63">
+				<button class="sBtn" id="btn23" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku63">
+				<button class="sBtn" id="btn24" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36  sudoku63">
+				<button class="sBtn" id="btn25" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47  sudoku63">
+				<button class="sBtn" id="btn26" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku63">
+				<button class="sBtn" id="btn27" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku63">
+				<button class="sBtn" id="btn28" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell sudoku74">
+				<button class="sBtn" id="btn30" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku74">
+				<button class="sBtn" id="btn31" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36  sudoku74">
+				<button class="sBtn" id="btn32" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47  sudoku74">
+				<button class="sBtn" id="btn33" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku74">
+				<button class="sBtn" id="btn34" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36  sudoku74">
+				<button class="sBtn" id="btn35" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47  sudoku74">
+				<button class="sBtn" id="btn36" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku74">
+				<button class="sBtn" id="btn37" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku74">
+				<button class="sBtn" id="btn38" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn40" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn41" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn42" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn43" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn44" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn45" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn46" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn47" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn48" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell sudoku63">
+				<button class="sBtn" id="btn50" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku63">
+				<button class="sBtn" id="btn51" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36  sudoku63">
+				<button class="sBtn" id="btn52" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47  sudoku63">
+				<button class="sBtn" id="btn53" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku63">
+				<button class="sBtn" id="btn54" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36  sudoku63">
+				<button class="sBtn" id="btn55" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47  sudoku63">
+				<button class="sBtn" id="btn56" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku63">
+				<button class="sBtn" id="btn57" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku63">
+				<button class="sBtn" id="btn58" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell sudoku74">
+				<button class="sBtn" id="btn60" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku74">
+				<button class="sBtn" id="btn61" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36  sudoku74">
+				<button class="sBtn" id="btn62" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47  sudoku74">
+				<button class="sBtn" id="btn63" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku74">
+				<button class="sBtn" id="btn64" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36  sudoku74">
+				<button class="sBtn" id="btn65" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47  sudoku74">
+				<button class="sBtn" id="btn66" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku74">
+				<button class="sBtn" id="btn67" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell  sudoku74">
+				<button class="sBtn" id="btn68" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn70" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn71" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn72" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn73" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn74" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn75" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn76" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn77" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn78" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow">
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn80" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn81" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn82" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn83" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn84" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku36">
+				<button class="sBtn" id="btn85" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell sudoku47">
+				<button class="sBtn" id="btn86" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn87" onclick="btnClick(this)">0</button>
+			</div>
+			<div class="sudokuCell">
+				<button class="sBtn" id="btn88" onclick="btnClick(this)">0</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<h5 class="text-center" id="error" style="color: red;"></h5>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<div class="sudokuRow" style="margin: 20px;">
+			<button class="btn btn-primary text-center" id="sendAllButton" onclick="sendAllValues()"
+			        style="margin: 15px;">Solve the puzzle
+			</button>
+			<button class="btn btn-success text-center" id="reset" onclick="clearAllValues()" style="margin: 15px;">
+				Clear All / Start Again
+			</button>
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+
+{% endblock %}
