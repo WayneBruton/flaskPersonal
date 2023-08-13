@@ -1,5 +1,6 @@
 # add venv folder and .env
 venv/
 .env
+__pycache__
 ```
 
