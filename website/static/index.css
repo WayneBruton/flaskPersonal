@@ -16,6 +16,39 @@ a {
 	text-decoration: none;
 }
 
+.smallScrn {
+	display: none;
+}
+
+li {
+
+	color: white;
+	list-style-type: upper-roman;
+
+}
+
+ul {
+	width: 50%;
+	overflow: hidden;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.title {
+ text-decoration: underline;
+ margin: 5px 0px;
+ font-size: 18px;
+ font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+	.smallScrn {
+		display: block;
+	}
+	.normalScrn {
+		display: none;
+	}
+}
+
 .enterBtn {
 	background-color: rgba(255, 255, 255, 0.1);
 	color: white;

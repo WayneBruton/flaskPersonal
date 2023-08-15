@@ -1,6 +1,7 @@
 Flask
 Flask-Login
 Flask-SQLAlchemy
+folium
 python-dotenv
 gunicorn
 
