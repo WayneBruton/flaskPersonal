@@ -61,6 +61,7 @@ def map():
                         <a class="nav-item nav-link" id="index" href="/index">About Me</a>
                         <a class="nav-item nav-link" id="sudoku" href="/sudoku">Sudoku</a>
                         <a class="nav-item nav-link" id="sudoku" href="/map">Map</a>
+                        <a class="nav-item nav-link" id="nextup" href="/nextup">What's Next</a>
 			        </div>
 		        </div>
 	        </div>
