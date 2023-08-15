@@ -19,7 +19,7 @@ def map():
     m = folium.Map(location=[-34.06242588810792, 18.45535459626709], zoom_start=9, width='70%', height='70%',
                    control_scale=True,
                    position='relative', left='15%')
-    folium.Marker(location=[-34.09242588810792, 18.45535459626709], popup="My Home", tooltip="Click to View!",
+    folium.Marker(location=[-34.09242588810792, 18.45535459626709], popup="My Home", tooltip="My Home",
                   icon=folium.Icon(icon='home', color='green')).add_to(m)
 
     folium.Marker(location=[-33.905147163594094, 18.41910346311488], popup="<strong>The Waterfront</strong>"
@@ -27,10 +27,10 @@ def map():
                                                                            "<img src='/static/images/background.jpg'"
                                                                            "width='100px' height='100px'>",
 
-                  tooltip="Click to View!", icon=folium.Icon(icon="info-sign", color='purple')).add_to(m)
+                  tooltip="V&A Waterfront!", icon=folium.Icon(icon="info-sign", color='purple')).add_to(m)
 
     folium.Marker(location=[-34.339651476024976, 18.49386103891301], popup="Cape Point",
-                  tooltip="Click to View!", icon=folium.Icon(icon="info-sign", color='orange')).add_to(m)
+                  tooltip="Cape Point!", icon=folium.Icon(icon="info-sign", color='orange')).add_to(m)
 
     m.get_root().render()
     header = m.get_root().header.render()
@@ -171,6 +171,10 @@ def solve(grid):
                 return
     return grid
 
+
 # @views.route("/map")
 # def map():
 #     return render_template("map.html", map=m._repr_html_())
+@views.route("/nextup")
+def nextup():
+    return render_template("nextup.html")
