@@ -1,7 +1,18 @@
+import os
+
 import folium
-from flask import Blueprint, render_template, request, jsonify, render_template_string
+from flask import (Blueprint, render_template, request, jsonify, render_template_string, send_from_directory, url_for,
+                   redirect)
+from werkzeug.utils import secure_filename
+from datetime import datetime
 
 views = Blueprint("views", __name__)
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'pdf'])
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @views.route("/", methods=["GET", "POST"])
@@ -12,6 +23,45 @@ def home():
 @views.route("/index")
 def index():
     return render_template("index.html")
+
+
+@views.route("/uploads", methods=["GET", "POST"])
+def uploads():
+    # if website/static/uploads folder does not exist, create it
+    if not os.path.exists("website/static/uploads"):
+        os.makedirs("website/static/uploads")
+    if request.method == "POST":
+        if request.files:
+            doc = request.files["file"]
+            if doc and allowed_file(doc.filename):
+                fileName = secure_filename(doc.filename)
+                fileName = f"{fileName.split('.')[0]}_{datetime.now()}.{fileName.split('.')[1]}"
+                doc.save(os.path.join("website/static/uploads", fileName))
+                print("File Saved")
+                # get a list of all files in the uploads folder
+                files = os.listdir("website/static/uploads")
+                # return redirect(url_for("uploads"))
+                return render_template("uploads.html", message="File Uploaded", files=files)
+            else:
+                print("That file extension is not allowed")
+                files = os.listdir("website/static/uploads")
+                return render_template("uploads.html", message="That file extension is not allowed", files=files)
+    else:
+        files = os.listdir("website/static/uploads")
+        print(files)
+        return render_template("uploads.html", message=None, files=files)
+
+
+@views.route("/download/<filename>")
+def download(filename):
+    return send_from_directory("website/static/uploads", filename=filename, as_attachment=True)
+
+
+@views.route("/delete/<filename>")
+def delete(filename):
+    os.remove(os.path.join("website/static/uploads", filename))
+    files = os.listdir("website/static/uploads")
+    return render_template("uploads.html", message="File Deleted", files=files)
 
 
 @views.route("/map")
@@ -61,6 +111,7 @@ def map():
                         <a class="nav-item nav-link" id="index" href="/index">About Me</a>
                         <a class="nav-item nav-link" id="sudoku" href="/sudoku">Sudoku</a>
                         <a class="nav-item nav-link" id="sudoku" href="/map">Map</a>
+                        <a class="nav-item nav-link" id="uploads" href="/uploads">File Uploads</a>
                         <a class="nav-item nav-link" id="nextup" href="/nextup">What's Next</a>
 			        </div>
 		        </div>
