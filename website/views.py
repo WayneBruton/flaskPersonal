@@ -2,7 +2,7 @@ import os
 
 import folium
 from flask import (Blueprint, render_template, request, jsonify, render_template_string, send_from_directory, url_for,
-                   redirect)
+                   redirect, send_file)
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
@@ -41,6 +41,7 @@ def uploads():
                 # get a list of all files in the uploads folder
                 files = os.listdir("website/static/uploads")
                 # return redirect(url_for("uploads"))
+
                 return render_template("uploads.html", message="File Uploaded", files=files)
             else:
                 print("That file extension is not allowed")
@@ -54,7 +55,9 @@ def uploads():
 
 @views.route("/download/<filename>")
 def download(filename):
-    return send_from_directory("website/static/uploads", filename=filename, as_attachment=True)
+    exact_path = f"static/uploads/{filename}"
+    return send_file(exact_path, as_attachment=True)
+    # return send_from_directory("website/static/uploads", filename=filename)
 
 
 @views.route("/delete/<filename>")
