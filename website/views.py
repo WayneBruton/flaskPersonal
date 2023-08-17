@@ -137,9 +137,15 @@ def map():
 	        </div>
         </nav>
         <h2 class="text-center" style="margin-top: 20px; color: white;">Folium Example</h2>
+        
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8" style="margin-top: 30px;">
+            <br>
+        <br>
+        <a class="text-center" href="https://github.com/WayneBruton/flaskPersonal/" target="_blank" style="color: white; text-decoration: underline; color: yellow;">Source Code</a>
+        <br>
+        <br>
         <p class="text-center" style="margin-top: 30px; color: white;">Just a simple Folium Example with hardcoded 
         coordinates & markers, this could easily be very interactive where the user can enter their own coordinates and 
         place their own markers (perhaps branch locations, places of interest, clients etc. <br />
