@@ -5,12 +5,23 @@ from flask import (Blueprint, render_template, request, jsonify, render_template
                    redirect, send_file, flash)
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from . import db
+from .models import File
+import boto3
+import uuid
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 views = Blueprint("views", __name__)
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'pdf'])
 
+bucket_name = "eccentrictoadperfectstaffbucket"
 
+
+# https://eccentrictoadperfectstaffbucket.s3.eu-west-2.amazonaws.com/
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -119,6 +130,7 @@ def map():
                         <a class="nav-item nav-link" id="sudoku" href="/sudoku">Sudoku</a>
                         <a class="nav-item nav-link" id="sudoku" href="/map">Map</a>
                         <a class="nav-item nav-link" id="uploads" href="/uploads">File Uploads</a>
+                        <a class="nav-item nav-link" id="s3example" href="/s3example">S3 example</a>
                         <a class="nav-item nav-link" id="nextup" href="/nextup">What's Next</a>
 			        </div>
 		        </div>
@@ -237,3 +249,59 @@ def solve(grid):
 @views.route("/nextup")
 def nextup():
     return render_template("nextup.html")
+
+
+@views.route("/s3example", methods=["GET", "POST"])
+def s3example():
+    if request.method == "POST":
+        uploaded_file = request.files["file"]
+        if not allowed_file(uploaded_file.filename):
+            flash("This type of file is not allowed", category="error")
+            return redirect(request.url)
+        new_fileName = uuid.uuid4().hex + '.' + uploaded_file.filename.rsplit('.', 1)[1].lower()
+        AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+        AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+        s3 = boto3.client(
+            "s3",
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+        )
+
+        s3.upload_fileobj(
+            uploaded_file,
+            bucket_name,
+            new_fileName,
+            ExtraArgs={
+                "ACL": "public-read",
+                "ContentType": uploaded_file.content_type
+            }
+        )
+        region = "eu-central-1"
+        file = File(original_fileName=uploaded_file.filename, fileName=new_fileName, bucket=bucket_name, region=region)
+        db.session.add(file)
+        db.session.commit()
+        return redirect(url_for("views.s3example"))
+
+    files = File.query.all()
+    # for file in files:
+    #     print(file.fileName)
+
+    return render_template("s3example.html", files=files)
+
+
+@views.route("/delete_file/<id>/<filename>")
+def delete_file(id, filename):
+    print("filename", filename)
+    print("id", id)
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+    )
+    s3.delete_object(Bucket=bucket_name, Key=filename)
+    file = File.query.get(id)
+    db.session.delete(file)
+    db.session.commit()
+    return redirect(url_for("views.s3example"))

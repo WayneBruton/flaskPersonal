@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="margin-top: 45px;">
+	<div class="row">
+		<div class="col-md-3"></div>
+		
+		
+		<div class="col-md-6">
+			
+			<br><br>
+			<h3 class="text-center" style="color: white">S3 Example</h3>
+			<p style="color: white;">A simple file upload / download and delete functionality with flash messages.
+				In this example I have only allowed png, jpg, jpeg and pdf extensions only.
+				I have deliberately not put these restrictions in the html but on the python server instead,
+				the reason being to illustrate how it's handled by the server but also the use of flash messaging.
+			This example I am also doing a bit of CRUD, I am saving the data to SQLite3 database and pushing the file
+				up to AWS S3, also when deleting, it removes the item from the database and removes it from AWS S3 too.</p>
+			<br><br>
+			<form method="POST" enctype="multipart/form-data">
+				<input class="text-bg-dark" type="file" name="file" id="file"><br><br>
+				<button type="submit" class="btn btn-primary text-bg-dark">Upload</button>
+			</form>
+			<br><br>
+			{% for file in files %}
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">New Name:{{ file.fileName }}</h5>
+					<h6 class="card-title">Old Name:{{ file.original_fileName }}</h6>
+					<h6 class="card-title">Region:{{ file.region }}</h6>
+					<h6 class="card-title">Bucket:{{ file.bucket }}</h6>
+					
+					<div style="display:flex; justify-content: space-around;">
+					
+					<a href="https://{{ file.bucket }}.s3.{{ file.region }}.amazonaws.com/{{ file.fileName }}" class="btn btn-primary" target="_blank">Download</a>
+					<a href="{{ url_for('views.delete_file', id=file.id, filename=file.fileName) }}" class="btn btn-danger">Delete</a>
+				</div>
+			</div>
+			<br>
+			{% endfor %}
+		
+		
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+</div>
+{% endblock %}
+```

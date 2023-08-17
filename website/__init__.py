@@ -15,7 +15,6 @@ DB_NAME = os.getenv("DB_NAME")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 
-
 def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = SECRET_KEY
@@ -49,7 +48,7 @@ def create_app():
 
 
 def create_database(app):
-    if not path.exists("website/" + DB_NAME):
+    if not path.exists("instance/" + DB_NAME):
         with app.app_context():
             db.create_all()
         print("Created Database!")
