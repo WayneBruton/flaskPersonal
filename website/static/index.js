@@ -1,6 +1,61 @@
-console.log("Hello World!");
+//console.log("Hello World!");
 function btnClick(button) {
-	console.log("Button clicked!");
+//	console.log("Button clicked!");
+//	let classes = button.classList;
+//	// remove the first class from the class list
+//	classes.remove(classes[0]);
+//	console.log(classes);
+//	let chosenAlready = []
+//
+//	let currentValue = parseInt(button.innerHTML);
+//
+//	for (let i = 0; i < classes.length; i++) {
+//		let buttons = document.querySelectorAll(`.${classes[i]}`);
+//		buttons.forEach(el => {
+//		 chosenAlready.push(parseInt(el.innerHTML));
+//		});
+//	}
+
+//	console.log("chosenAlready",chosenAlready);
+
+	// remove first instance from chosenAlready array where value = currentValue
+//	chosenAlready = chosenAlready.filter(function (value, index, arr) {
+//		return value !== currentValue;
+//	})
+
+	// remove the current value from the chosenAlready array
+//	chosenAlready = chosenAlready.filter(function (value, index, arr) {
+//		return value !== currentValue;
+//	})
+
+	//filter out the 0s
+//	chosenAlready = chosenAlready.filter(function (value, index, arr) {
+//		return value !== 0 && value !== currentValue;
+//	})
+//	chosenAlready = [...new Set(chosenAlready)];
+//
+//
+//
+//	numbersAllowed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+	// remove currentValue from numbersAllowed array
+
+	// remove the numbers that are already chosen from the numbersAllowed array
+//	numbersAllowed = numbersAllowed.filter(function (value, index, arr) {
+//		return !chosenAlready.includes(value);
+//	})
+//	numbersAllowed = numbersAllowed.filter(function (value, index, arr) {
+//		return value > currentValue;
+//	})
+//	numbersAllowed.push(0);
+//	if (currentValue !== numbersAllowed[numbersAllowed.length - 1]) {
+//		numbersAllowed.push(currentValue);
+//	}
+//
+//	console.log("chosenAlready",chosenAlready);
+//	console.log("numbersAllowed",numbersAllowed);
+//	var newValue = numbersAllowed[0];
+
+
 
 
 
@@ -12,6 +67,8 @@ function btnClick(button) {
     }
     button.innerHTML = newValue;
     button.style.color = newValue === 0 ? 'white' : 'black';
+    button.style.backgroundColor = 'transparent';
+    button.style.border = 'none';
     checkAllValues();
     checkDuplicates();
 }
@@ -130,6 +187,8 @@ function reset() {
 
 	});
 }
+
+
 
 function checkDuplicates() {
 var buttonData = [];
@@ -446,12 +505,12 @@ var buttonData = [];
 
 }
 
-// only do the checkvalues function if the url is sudoku.html
+
 if (window.location.href.indexOf("sudoku.html") > -1) {
 	checkValues();
 }
 
-// Get references to the file input and submit button
+if (window.location.href.indexOf("uploads.html") > -1 || window.location.href.indexOf("s3example.html") > -1) {
     const fileInput = document.getElementById('fileInput');
     const submitButton = document.getElementById('submitButton');
 
@@ -464,6 +523,7 @@ if (window.location.href.indexOf("sudoku.html") > -1) {
             submitButton.disabled = true;
         }
     });
+    }
 
 
 
