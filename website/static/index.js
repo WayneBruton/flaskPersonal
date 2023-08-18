@@ -510,7 +510,7 @@ if (window.location.href.indexOf("sudoku.html") > -1) {
 	checkValues();
 }
 
-if (window.location.href.indexOf("uploads.html") > -1 || window.location.href.indexOf("s3example.html") > -1) {
+//if (window.location.href.indexOf("uploads.html") > -1 || window.location.href.indexOf("s3example.html") > -1) {
     const fileInput = document.getElementById('fileInput');
     const submitButton = document.getElementById('submitButton');
 
@@ -523,7 +523,7 @@ if (window.location.href.indexOf("uploads.html") > -1 || window.location.href.in
             submitButton.disabled = true;
         }
     });
-    }
+//    }
 
 
 
