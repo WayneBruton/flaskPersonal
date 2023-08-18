@@ -46,7 +46,7 @@ def uploads():
             doc = request.files["file"]
             if doc and allowed_file(doc.filename):
                 fileName = secure_filename(doc.filename)
-                fileName = f"{fileName.split('.')[0]}_{datetime.now()}.{fileName.split('.')[1]}"
+                fileName = f"{fileName.rsplit('.')[0]}_{datetime.now()}.{fileName.rsplit('.', 1)[1]}"
                 doc.save(os.path.join("website/static/uploads", fileName))
                 print("File Saved")
                 # get a list of all files in the uploads folder
@@ -111,31 +111,37 @@ def map():
     <head>
         <meta charset="utf-8" />
         <title>Folium</title>
-	    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+ 
+	    
 	    <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" type="image/png">
 	    <link rel="icon" href="{{ url_for('static', filename='favicon-16x16.png') }}" type="image/png">
 	    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
         {{ header|safe }}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+	      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
     </head>
+    
     <body class="body">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navMap">
 	        <div class="container-fluid">
 		        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
 			        <span class="navbar-toggler-icon"></span>
 		        </button>
 		        <div class="collapse navbar-collapse" id="navbar">
 			        <div class="navbar-nav">
-                        <a class="nav-item nav-link" id="home" href="/">Home</a>
-                        <a class="nav-item nav-link" id="index" href="/index">About Me</a>
-                        <a class="nav-item nav-link" id="sudoku" href="/sudoku">Sudoku</a>
-                        <a class="nav-item nav-link" id="sudoku" href="/map">Map</a>
-                        <a class="nav-item nav-link" id="uploads" href="/uploads">File Uploads</a>
-                        <a class="nav-item nav-link" id="s3example" href="/s3example">S3 example</a>
-                        <a class="nav-item nav-link" id="nextup" href="/nextup">What's Next</a>
+                        <a class="nav-item nav-link mapA" id="home" href="/">Home</a>
+                        <a class="nav-item nav-link mapA" id="index" href="/index">About Me</a>
+                        <a class="nav-item nav-link mapA" id="sudoku" href="/sudoku">Sudoku</a>
+                        <a class="nav-item nav-link mapA" id="sudoku" href="/map">Map</a>
+                        <a class="nav-item nav-link mapA" id="uploads" href="/uploads">File Uploads</a>
+                        <a class="nav-item nav-link mapA" id="s3example" href="/s3example">S3 example</a>
+                        <a class="nav-item nav-link mapA" id="nextup" href="/nextup">What's Next</a>
 			        </div>
 		        </div>
 	        </div>
         </nav>
+        <br><br><br>
         <h2 class="text-center" style="margin-top: 20px; color: white;">Folium Example</h2>
         
         <div class="row">
@@ -143,10 +149,10 @@ def map():
             <div class="col-md-8" style="margin-top: 30px;">
             <br>
         <br>
-        <a class="text-center" href="https://github.com/WayneBruton/flaskPersonal/" target="_blank" style="color: white; text-decoration: underline; color: yellow;">Source Code</a>
+        <a class="text-center" href="https://github.com/WayneBruton/flaskPersonal/" target="_blank" style="color: white; text-decoration: underline; color: yellow; font-size: 16px;">Source Code</a>
         <br>
         <br>
-        <p class="text-center" style="margin-top: 30px; color: white;">Just a simple Folium Example with hardcoded 
+        <p class="text-center" style="margin-top: 30px; color: white; font-size: 15px;">Just a simple Folium Example with hardcoded 
         coordinates & markers, this could easily be very interactive where the user can enter their own coordinates and 
         place their own markers (perhaps branch locations, places of interest, clients etc. <br />
         <br />

@@ -5,6 +5,25 @@
     background-position: center;
 }
 
+.mapA {
+	text-decoration: none;
+	font-size: 15px;
+	margin: 0px 5px;
+
+
+}
+
+.navMap {
+   height: 57px;
+}
+
+.mapA:hover {
+	text-decoration: none;
+
+	color: white;
+
+
+}
 .homeDiv {
 	background-color: rgba(0, 0, 0, 0.4);
 	height: 100vh;
@@ -12,6 +31,11 @@
 }
 
 a {
+	color: white;
+
+}
+
+a:hover {
 	color: white;
 	text-decoration: none;
 }

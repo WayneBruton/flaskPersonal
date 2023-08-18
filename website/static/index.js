@@ -451,6 +451,19 @@ if (window.location.href.indexOf("sudoku.html") > -1) {
 	checkValues();
 }
 
+// Get references to the file input and submit button
+    const fileInput = document.getElementById('fileInput');
+    const submitButton = document.getElementById('submitButton');
+
+    // Add an event listener to the file input
+    fileInput.addEventListener('change', function() {
+        // Enable the submit button if a file is selected, otherwise disable it
+        if (fileInput.files.length > 0) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    });
 
 
 
