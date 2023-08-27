@@ -6,8 +6,6 @@ Flask-SQLAlchemy
 folium
 gunicorn
 numpy
-opencv-python
 python-dotenv
 Werkzeug
-opencv-python-headless
 

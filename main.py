@@ -1,9 +1,4 @@
-import os
-
 from website import create_app
-
-if not os.path.exists('website/uploads'):
-    os.makedirs('website/uploads')
 
 app = create_app()
 

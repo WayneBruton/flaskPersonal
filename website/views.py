@@ -1,5 +1,5 @@
 import os
-import cv2
+# import cv2
 import folium
 from flask import (Blueprint, render_template, request, jsonify, render_template_string, url_for,
                    redirect, send_file, flash, send_from_directory)
@@ -271,55 +271,55 @@ def delete_file(id, filename):
     return redirect(url_for("views.s3example"))
 
 
-@views.route("/imagemanipulation", methods=["GET", "POST"])
-def imagemainpulation():
-    global image_name
-    if request.method == "POST":
-        # delete all files in uploads folder
-        files = os.listdir("website/uploads")
-        for file in files:
-            os.remove(f"website/uploads/{file}")
-        if 'image' not in request.files:
-            return redirect(request.url)
-        doc = request.files["image"]
-        if doc.filename == '':
-            return redirect(request.url)
-
-        if doc and allowed_file(doc.filename):
-            fileName = secure_filename(doc.filename)
-            fileName = f"{fileName.rsplit('.')[0]}_{datetime.now()}.{fileName.rsplit('.', 1)[1]}"
-            doc.save(os.path.join("website/uploads", fileName))
-            # print("File Saved")
-            uploaded_img = url_for('views.uploaded_image', filename=fileName)
-
-            if os.path.isfile("website/uploads/cropped_image.jpg"):
-                cropped_img1 = url_for('views.cropped_image', filename='cropped_image.jpg')
-
-            else:
-                cropped_img1 = None
-
-            # print("uploaded_image", uploaded_img)
-            flash("File Uploaded", category="success")
-
-            return render_template("image_manipulation.html",
-                                   uploaded_image=uploaded_img, cropped_image=cropped_img1)
-
-    # check if the file cropped_image.jpg is in the uploads folder, if yes, do the following: cropped_img1 = url_for(
-    # 'views.cropped_image', filename='cropped_image.jpg') else set cropped_img1 = None
-    if os.path.isfile("website/uploads/cropped_image.jpg"):
-        cropped_img1 = url_for('views.cropped_image', filename='cropped_image.jpg')
-        uploaded_img = url_for('views.uploaded_image', filename=image_name)
-
-
-    else:
-        cropped_img1 = None
-        uploaded_img = None
-        # delete all files in uploads folder
-        files = os.listdir("website/uploads")
-        for file in files:
-            os.remove(f"website/uploads/{file}")
-
-    return render_template("image_manipulation.html", uploaded_image=uploaded_img, cropped_image=cropped_img1)
+# @views.route("/imagemanipulation", methods=["GET", "POST"])
+# def imagemainpulation():
+#     global image_name
+#     if request.method == "POST":
+#         # delete all files in uploads folder
+#         files = os.listdir("website/uploads")
+#         for file in files:
+#             os.remove(f"website/uploads/{file}")
+#         if 'image' not in request.files:
+#             return redirect(request.url)
+#         doc = request.files["image"]
+#         if doc.filename == '':
+#             return redirect(request.url)
+#
+#         if doc and allowed_file(doc.filename):
+#             fileName = secure_filename(doc.filename)
+#             fileName = f"{fileName.rsplit('.')[0]}_{datetime.now()}.{fileName.rsplit('.', 1)[1]}"
+#             doc.save(os.path.join("website/uploads", fileName))
+#             # print("File Saved")
+#             uploaded_img = url_for('views.uploaded_image', filename=fileName)
+#
+#             if os.path.isfile("website/uploads/cropped_image.jpg"):
+#                 cropped_img1 = url_for('views.cropped_image', filename='cropped_image.jpg')
+#
+#             else:
+#                 cropped_img1 = None
+#
+#             # print("uploaded_image", uploaded_img)
+#             flash("File Uploaded", category="success")
+#
+#             return render_template("image_manipulation.html",
+#                                    uploaded_image=uploaded_img, cropped_image=cropped_img1)
+#
+#     # check if the file cropped_image.jpg is in the uploads folder, if yes, do the following: cropped_img1 = url_for(
+#     # 'views.cropped_image', filename='cropped_image.jpg') else set cropped_img1 = None
+#     if os.path.isfile("website/uploads/cropped_image.jpg"):
+#         cropped_img1 = url_for('views.cropped_image', filename='cropped_image.jpg')
+#         uploaded_img = url_for('views.uploaded_image', filename=image_name)
+#
+#
+#     else:
+#         cropped_img1 = None
+#         uploaded_img = None
+#         # delete all files in uploads folder
+#         files = os.listdir("website/uploads")
+#         for file in files:
+#             os.remove(f"website/uploads/{file}")
+#
+#     return render_template("image_manipulation.html", uploaded_image=uploaded_img, cropped_image=cropped_img1)
 
 
 @views.route("/uploaded_image/<filename>")
@@ -331,57 +331,57 @@ def uploaded_image(filename):
 image_name = ""
 
 
-@views.route('/send-data-to-server', methods=['POST'])
-def send_data_to_server():
-    global image_name
-    data = request.json
-    image_name = data['imageName']
-    new_left = data['newLeft']
-    new_top = data['newTop']
+# @views.route('/send-data-to-server', methods=['POST'])
+# def send_data_to_server():
+#     global image_name
+#     data = request.json
+#     image_name = data['imageName']
+#     new_left = data['newLeft']
+#     new_top = data['newTop']
+#
+#     image_name = image_name.replace("%20", " ")
+#     image_name = image_name.rsplit("/", 1)[-1]
+#
+#     image = cv2.imread(f"website/uploads/{image_name}")
+#     height = image.shape[0]
+#     width = image.shape[1]
+#
+#     scaling_factor = width / 500  # Scaling factor from displayed image to actual image
+#
+#     overlay_left_on_actual_image = new_left * scaling_factor
+#     overlay_top_on_actual_image = new_top * scaling_factor
+#
+#     crop_width = int(150 * scaling_factor)  # Width of the cropping rectangle
+#     crop_height = int(150 * scaling_factor)  # Height of the cropping rectangle
+#
+#     # Calculate the cropping rectangle coordinates
+#     crop_x = int(max(overlay_left_on_actual_image, 0))
+#     crop_y = int(max(overlay_top_on_actual_image, 0))
+#
+#     # Calculate the right and bottom coordinates of the cropping rectangle
+#     crop_right = int(min(crop_x + crop_width, width))  # Limit to image width
+#     crop_bottom = int(min(crop_y + crop_height, height))  # Limit to image height
+#
+#     cropped_img = image[crop_y:crop_bottom, crop_x:crop_right]
+#     cv2.imwrite('website/uploads/cropped_image.jpg', cropped_img)
+#
+#     flash("Image Cropped", category="success")
+#
+#     print("Good So Far")
+#
+#     try:
+#         return jsonify({'success': True})
+#     except Exception as e:
+#         print("Error:", e)
+#         return jsonify({'success': False})
 
-    image_name = image_name.replace("%20", " ")
-    image_name = image_name.rsplit("/", 1)[-1]
 
-    image = cv2.imread(f"website/uploads/{image_name}")
-    height = image.shape[0]
-    width = image.shape[1]
-
-    scaling_factor = width / 500  # Scaling factor from displayed image to actual image
-
-    overlay_left_on_actual_image = new_left * scaling_factor
-    overlay_top_on_actual_image = new_top * scaling_factor
-
-    crop_width = int(150 * scaling_factor)  # Width of the cropping rectangle
-    crop_height = int(150 * scaling_factor)  # Height of the cropping rectangle
-
-    # Calculate the cropping rectangle coordinates
-    crop_x = int(max(overlay_left_on_actual_image, 0))
-    crop_y = int(max(overlay_top_on_actual_image, 0))
-
-    # Calculate the right and bottom coordinates of the cropping rectangle
-    crop_right = int(min(crop_x + crop_width, width))  # Limit to image width
-    crop_bottom = int(min(crop_y + crop_height, height))  # Limit to image height
-
-    cropped_img = image[crop_y:crop_bottom, crop_x:crop_right]
-    cv2.imwrite('website/uploads/cropped_image.jpg', cropped_img)
-
-    flash("Image Cropped", category="success")
-
-    print("Good So Far")
-
-    try:
-        return jsonify({'success': True})
-    except Exception as e:
-        print("Error:", e)
-        return jsonify({'success': False})
-
-
-@views.route("/cropped_image/<filename>")
-def cropped_image(filename):
-    # print("filename", filename)
-    # filename = filename.split("/")[1]
-    # print("filename", filename)
-    return send_from_directory("uploads", filename)
+# @views.route("/cropped_image/<filename>")
+# def cropped_image(filename):
+#     # print("filename", filename)
+#     # filename = filename.split("/")[1]
+#     # print("filename", filename)
+#     return send_from_directory("uploads", filename)
 
 
 def possible(grid, row, column, number):
