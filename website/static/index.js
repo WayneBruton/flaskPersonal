@@ -1,4 +1,7 @@
 //console.log("Hello World!");
+window.addEventListener('DOMContentLoaded', (event) => {
+  // Your JavaScript code here
+
 function btnClick(button) {
 //	console.log("Button clicked!");
 //	let classes = button.classList;
@@ -510,7 +513,7 @@ if (window.location.href.indexOf("sudoku.html") > -1) {
 	checkValues();
 }
 
-//if (window.location.href.indexOf("uploads.html") > -1 || window.location.href.indexOf("s3example.html") > -1) {
+if (window.location.href.indexOf("uploads") > -1 || window.location.href.indexOf("s3example") > -1) {
     const fileInput = document.getElementById('fileInput');
     const submitButton = document.getElementById('submitButton');
 
@@ -523,9 +526,101 @@ if (window.location.href.indexOf("sudoku.html") > -1) {
             submitButton.disabled = true;
         }
     });
-//    }
+    }
 
 
+if (window.location.href.indexOf("imagemanipulation") > -1) {
+console.log('hello');
+const overlay = document.getElementById('overlay');
+const image = document.querySelector('.image-container img');
+console.log(image.src);
+let imageName = image.src;
+let leftI, topI;
+let startX, startY, offsetX, offsetY;
+let dragging = false;
+
+image.onload = () => {
+            const width = image.naturalWidth;
+            const height = image.naturalHeight;
+
+            console.log(`Image dimensions: ${width} x ${height}`);
+        };
+
+overlay.addEventListener('mousedown', (e) => {
+    startX = e.clientX;
+    startY = e.clientY;
+    offsetX = overlay.offsetLeft;
+    offsetY = overlay.offsetTop;
+    dragging = true;
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+
+    const containerRect = image.getBoundingClientRect();
+
+    const maxX = containerRect.width - overlay.offsetWidth;
+    const maxY = containerRect.height - overlay.offsetHeight;
+
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
+
+    const newLeft = Math.min(Math.max(offsetX + deltaX, 0), maxX);
+    const newTop = Math.min(Math.max(offsetY + deltaY, 0), maxY);
+
+    overlay.style.left = newLeft + 'px';
+    overlay.style.top = newTop + 'px';
+//    console.log(newLeft, newTop);
+});
+
+document.addEventListener('mouseup', () => {
+	leftI = parseInt(overlay.style.left);
+     topI = parseInt(overlay.style.top);
+     console.log(leftI, topI);
+    dragging = false;
+
+    document.getElementById('sendButton').disabled = false;
+
+});
+
+document.getElementById('sendButton').addEventListener('click', () => {
+    if (leftI !== undefined && topI !== undefined) {
+        const data = {
+            imageName: imageName,
+            newLeft: leftI,
+            newTop: topI
+        };
+
+        // Send the data to your Flask server
+        fetch('/send-data-to-server', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.success);
+            if (data.success) {
+                // Refresh the page if data.success is true
+//                location.reload();
+				window.location.href = window.location.href;
+//				console.log(data);
+            }
+            // Handle response from the server if needed
+        })
+        .catch(error => {
+            console.log(JSON.parse(error));
+            // Handle error if needed
+        });
+    }
+});
+
+}
+
+
+});
 
 
 

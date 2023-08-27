@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Image Manipulation{% endblock %}
+
+{% block content %}
+<br><br><br>
+<h2 class="text-center" style="color: white;">Image Manipulation</h2>
+
+
+<br><br>
+
+<br><br>
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
+		<p style="color: white;">Image cropping using openCV and Flask. I have used a simple image upload form to upload
+			an
+			image, then I have used openCV to crop the image and then display the cropped image. I have used a div
+			inside a
+			div to display the cropped image, the outer div has a position of relative and the inner div has a position
+			of
+			absolute, this allows me to position the inner div over the outer div. I have also used a button to enable
+			the
+			cropping functionality, this is disabled until an image is uploaded. When a new image is uploaded, I am
+			deleting all other images in that specific folder.
+		</p>
+		<br><br>
+		<a href="https://github.com/WayneBruton/flaskPersonal/" target="_blank"
+		   style="color: white; text-decoration: underline; color: yellow;">Source Code</a>
+		<br><br>
+		<form method="POST" enctype="multipart/form-data">
+			<input class="text-bg-dark" type="file" name="image" id="image" accept=" .png, .jpg, .jpeg"><br><br>
+			<button type="submit" class="btn btn-primary text-bg-dark" id="submit">Upload</button>
+		</form>
+		
+		<br><br>
+	
+	</div>
+	<div class="col-md-3"></div>
+	<div class="row">
+		<div class="col-md-6">
+			<h4 class="text-center" style="color: white">Uploaded Image</h4>
+			<div class="image-container">
+				<img src="{{ uploaded_image }}" alt="Uploaded Image" style="width: 500px;">
+				<div id="overlay" class="overlay"></div>
+			</div>
+			<br><br>
+			<div style="display: flex; justify-content: center;">
+				<button id="sendButton" class="btn btn-primary text-bg-dark" id="crop" disabled>Crop</button>
+			</div>
+		</div>
+		
+		<div class="col-md-6">
+			<h4 class="text-center" style="color: white">Cropped Image</h4>
+			<img src="{{ cropped_image }}" alt="Cropped Image" style="width: 500px;">
+		</div>
+	
+	</div>
+</div>
+
+<br><br>
+
+
+{% endblock %}
