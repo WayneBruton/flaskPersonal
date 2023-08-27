@@ -14,6 +14,10 @@ load_dotenv()
 DB_NAME = os.getenv("DB_NAME")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+# if website/uploads folder does not exist, create it
+if not os.path.exists('website/uploads'):
+    os.makedirs('website/uploads')
+
 
 def create_app():
     app = Flask(__name__)
