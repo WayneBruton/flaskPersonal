@@ -10,4 +10,4 @@ opencv-python
 python-dotenv
 Werkzeug
 opencv-python-headless
-libgl1-mesa-glx
+
