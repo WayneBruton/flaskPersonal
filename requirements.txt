@@ -1,9 +1,9 @@
-boto3~=1.28.28
-Flask~=2.3.2
+boto3
+Flask
 Flask-Login
 Flask-SQLAlchemy
-folium~=0.14.0
-python-dotenv~=1.0.0
+folium
+python-dotenv
 gunicorn
-werkzeug~=2.3.6
-opencv-python~=4.8.0.76
+werkzeug
+opencv-python
