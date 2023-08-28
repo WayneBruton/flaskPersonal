@@ -1,9 +1,9 @@
-//console.log("Hello World!");
-window.addEventListener('DOMContentLoaded', (event) => {
+console.log("Hello World!");
+//window.addEventListener('DOMContentLoaded', (event) => {
   // Your JavaScript code here
 
 function btnClick(button) {
-//	console.log("Button clicked!");
+	console.log("Button clicked!");
 //	let classes = button.classList;
 //	// remove the first class from the class list
 //	classes.remove(classes[0]);
@@ -620,7 +620,7 @@ document.getElementById('sendButton').addEventListener('click', () => {
 }
 
 
-});
+//});
 
 
 

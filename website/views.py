@@ -6,7 +6,7 @@ from flask import (Blueprint, render_template, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from . import db
-from .models import File
+from .models import File, Post
 import boto3
 import uuid
 
