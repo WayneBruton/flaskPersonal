@@ -156,6 +156,9 @@ def map():
             <br />
             <strong>ISSUES TO SORT:</strong> Folium it appears uses a different version of bootstrap, as result the 
             NavBar looks slightly different, I will sort it eventually.
+            <br />
+            Also, a marker can have an image, please see the purple marker on the map, I have added an image to the
+            popup.
             </p>
         </div>
             <div class="col-md-2"></div>
