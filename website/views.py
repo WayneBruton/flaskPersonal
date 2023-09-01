@@ -38,31 +38,35 @@ def index():
 @views.route("/uploads", methods=["GET", "POST"])
 def uploads():
     # if website/static/uploads folder does not exist, create it
-    if not os.path.exists("website/static/uploads"):
-        os.makedirs("website/static/uploads")
-    if request.method == "POST":
-        if request.files:
-            doc = request.files["file"]
-            if doc and allowed_file(doc.filename):
-                fileName = secure_filename(doc.filename)
-                fileName = f"{fileName.rsplit('.')[0]}_{datetime.now()}.{fileName.rsplit('.', 1)[1]}"
-                doc.save(os.path.join("website/static/uploads", fileName))
-                print("File Saved")
-                # get a list of all files in the uploads folder
-                files = os.listdir("website/static/uploads")
-                # return redirect(url_for("uploads"))
-                flash("File Uploaded", category="success")
+    try:
+        if not os.path.exists("website/static/uploads"):
+            os.makedirs("website/static/uploads")
+        if request.method == "POST":
+            if request.files:
+                doc = request.files["file"]
+                if doc and allowed_file(doc.filename):
+                    fileName = secure_filename(doc.filename)
+                    fileName = f"{fileName.rsplit('.')[0]}_{datetime.now()}.{fileName.rsplit('.', 1)[1]}"
+                    doc.save(os.path.join("website/static/uploads", fileName))
+                    print("File Saved")
+                    # get a list of all files in the uploads folder
+                    files = os.listdir("website/static/uploads")
+                    # return redirect(url_for("uploads"))
+                    flash("File Uploaded", category="success")
 
-                return render_template("uploads.html", files=files)
-            else:
-                print("That file extension is not allowed")
-                files = os.listdir("website/static/uploads")
-                flash("That file extension is not allowed", category="error")
-                return render_template("uploads.html", files=files)
-    else:
-        files = os.listdir("website/static/uploads")
-        print(files)
-        return render_template("uploads.html", message=None, files=files)
+                    return render_template("uploads.html", files=files)
+                else:
+                    print("That file extension is not allowed")
+                    files = os.listdir("website/static/uploads")
+                    flash("That file extension is not allowed", category="error")
+                    return render_template("uploads.html", files=files)
+        else:
+            files = os.listdir("website/static/uploads")
+            print(files)
+            return render_template("uploads.html", message=None, files=files)
+    except Exception as e:
+        print("Error:", e)
+        return render_template("uploads.html", message=None, files=None)
 
 
 @views.route("/download/<filename>")
@@ -221,12 +225,50 @@ def nextup():
 
 @views.route("/s3example", methods=["GET", "POST"])
 def s3example():
-    if request.method == "POST":
-        uploaded_file = request.files["file"]
-        if not allowed_file(uploaded_file.filename):
-            flash("This type of file is not allowed", category="error")
-            return redirect(request.url)
-        new_fileName = uuid.uuid4().hex + '.' + uploaded_file.filename.rsplit('.', 1)[1].lower()
+    try:
+        if request.method == "POST":
+            uploaded_file = request.files["file"]
+            if not allowed_file(uploaded_file.filename):
+                flash("This type of file is not allowed", category="error")
+                return redirect(request.url)
+            new_fileName = uuid.uuid4().hex + '.' + uploaded_file.filename.rsplit('.', 1)[1].lower()
+            AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+            AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+            s3 = boto3.client(
+                "s3",
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+            )
+
+            s3.upload_fileobj(
+                uploaded_file,
+                bucket_name,
+                new_fileName,
+                ExtraArgs={
+                    "ACL": "public-read",
+                    "ContentType": uploaded_file.content_type
+                }
+            )
+            region = "eu-central-1"
+            file = File(original_fileName=uploaded_file.filename, fileName=new_fileName, bucket=bucket_name,
+                        region=region)
+            db.session.add(file)
+            db.session.commit()
+            return redirect(url_for("views.s3example"))
+
+        files = File.query.all()
+        # for file in files:
+        #     print(file.fileName)
+
+        return render_template("s3example.html", files=files)
+    except Exception as e:
+        print("Error:", e)
+        return render_template("s3example.html", files=None)
+
+
+@views.route("/delete_file/<id>/<filename>")
+def delete_file(id, filename):
+    try:
         AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
         AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
         s3 = boto3.client(
@@ -234,96 +276,69 @@ def s3example():
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY
         )
-
-        s3.upload_fileobj(
-            uploaded_file,
-            bucket_name,
-            new_fileName,
-            ExtraArgs={
-                "ACL": "public-read",
-                "ContentType": uploaded_file.content_type
-            }
-        )
-        region = "eu-central-1"
-        file = File(original_fileName=uploaded_file.filename, fileName=new_fileName, bucket=bucket_name, region=region)
-        db.session.add(file)
+        s3.delete_object(Bucket=bucket_name, Key=filename)
+        file = File.query.get(id)
+        db.session.delete(file)
         db.session.commit()
         return redirect(url_for("views.s3example"))
-
-    files = File.query.all()
-    # for file in files:
-    #     print(file.fileName)
-
-    return render_template("s3example.html", files=files)
-
-
-@views.route("/delete_file/<id>/<filename>")
-def delete_file(id, filename):
-    # print("filename", filename)
-    # print("id", id)
-    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-    s3 = boto3.client(
-        "s3",
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-    )
-    s3.delete_object(Bucket=bucket_name, Key=filename)
-    file = File.query.get(id)
-    db.session.delete(file)
-    db.session.commit()
-    return redirect(url_for("views.s3example"))
+    except Exception as e:
+        print("Error:", e)
+        return redirect(url_for("views.s3example"))
 
 
 @views.route("/imagemanipulation", methods=["GET", "POST"])
 def imagemainpulation():
-    global image_name
-    if request.method == "POST":
-        # delete all files in uploads folder
-        files = os.listdir("website/uploads")
-        for file in files:
-            os.remove(f"website/uploads/{file}")
-        if 'image' not in request.files:
-            return redirect(request.url)
-        doc = request.files["image"]
-        if doc.filename == '':
-            return redirect(request.url)
+    try:
+        global image_name
+        if request.method == "POST":
+            # delete all files in uploads folder
+            files = os.listdir("website/uploads")
+            for file in files:
+                os.remove(f"website/uploads/{file}")
+            if 'image' not in request.files:
+                return redirect(request.url)
+            doc = request.files["image"]
+            if doc.filename == '':
+                return redirect(request.url)
 
-        if doc and allowed_file(doc.filename):
-            fileName = secure_filename(doc.filename)
-            fileName = f"{fileName.rsplit('.')[0]}_{datetime.now()}.{fileName.rsplit('.', 1)[1]}"
-            doc.save(os.path.join("website/uploads", fileName))
-            # print("File Saved")
-            uploaded_img = url_for('views.uploaded_image', filename=fileName)
+            if doc and allowed_file(doc.filename):
+                fileName = secure_filename(doc.filename)
+                fileName = f"{fileName.rsplit('.')[0]}_{datetime.now()}.{fileName.rsplit('.', 1)[1]}"
+                doc.save(os.path.join("website/uploads", fileName))
+                # print("File Saved")
+                uploaded_img = url_for('views.uploaded_image', filename=fileName)
 
-            if os.path.isfile("website/uploads/cropped_image.jpg"):
-                cropped_img1 = url_for('views.cropped_image', filename='cropped_image.jpg')
+                if os.path.isfile("website/uploads/cropped_image.jpg"):
+                    cropped_img1 = url_for('views.cropped_image', filename='cropped_image.jpg')
 
-            else:
-                cropped_img1 = None
+                else:
+                    cropped_img1 = None
 
-            # print("uploaded_image", uploaded_img)
-            flash("File Uploaded", category="success")
+                # print("uploaded_image", uploaded_img)
+                flash("File Uploaded", category="success")
 
-            return render_template("image_manipulation.html",
-                                   uploaded_image=uploaded_img, cropped_image=cropped_img1)
+                return render_template("image_manipulation.html",
+                                       uploaded_image=uploaded_img, cropped_image=cropped_img1)
 
-    # check if the file cropped_image.jpg is in the uploads folder, if yes, do the following: cropped_img1 = url_for(
-    # 'views.cropped_image', filename='cropped_image.jpg') else set cropped_img1 = None
-    if os.path.isfile("website/uploads/cropped_image.jpg"):
-        cropped_img1 = url_for('views.cropped_image', filename='cropped_image.jpg')
-        uploaded_img = url_for('views.uploaded_image', filename=image_name)
+        # check if the file cropped_image.jpg is in the uploads folder, if yes, do the following: cropped_img1 = url_for(
+        # 'views.cropped_image', filename='cropped_image.jpg') else set cropped_img1 = None
+        if os.path.isfile("website/uploads/cropped_image.jpg"):
+            cropped_img1 = url_for('views.cropped_image', filename='cropped_image.jpg')
+            uploaded_img = url_for('views.uploaded_image', filename=image_name)
 
 
-    else:
-        cropped_img1 = None
-        uploaded_img = None
-        # delete all files in uploads folder
-        files = os.listdir("website/uploads")
-        for file in files:
-            os.remove(f"website/uploads/{file}")
+        else:
+            cropped_img1 = None
+            uploaded_img = None
+            # delete all files in uploads folder
+            files = os.listdir("website/uploads")
+            for file in files:
+                os.remove(f"website/uploads/{file}")
 
-    return render_template("image_manipulation.html", uploaded_image=uploaded_img, cropped_image=cropped_img1)
+        return render_template("image_manipulation.html", uploaded_image=uploaded_img, cropped_image=cropped_img1)
+    except Exception as e:
+        print("Error:", e)
+        return render_template("image_manipulation.html", uploaded_image=None, cropped_image=None)
 
 
 @views.route("/uploaded_image/<filename>")
@@ -337,44 +352,48 @@ image_name = ""
 
 @views.route('/send-data-to-server', methods=['POST'])
 def send_data_to_server():
-    global image_name
-    data = request.json
-    image_name = data['imageName']
-    new_left = data['newLeft']
-    new_top = data['newTop']
-
-    image_name = image_name.replace("%20", " ")
-    image_name = image_name.rsplit("/", 1)[-1]
-
-    image = cv2.imread(f"website/uploads/{image_name}")
-    height = image.shape[0]
-    width = image.shape[1]
-
-    scaling_factor = width / 500  # Scaling factor from displayed image to actual image
-
-    overlay_left_on_actual_image = new_left * scaling_factor
-    overlay_top_on_actual_image = new_top * scaling_factor
-
-    crop_width = int(150 * scaling_factor)  # Width of the cropping rectangle
-    crop_height = int(150 * scaling_factor)  # Height of the cropping rectangle
-
-    # Calculate the cropping rectangle coordinates
-    crop_x = int(max(overlay_left_on_actual_image, 0))
-    crop_y = int(max(overlay_top_on_actual_image, 0))
-
-    # Calculate the right and bottom coordinates of the cropping rectangle
-    crop_right = int(min(crop_x + crop_width, width))  # Limit to image width
-    crop_bottom = int(min(crop_y + crop_height, height))  # Limit to image height
-
-    cropped_img = image[crop_y:crop_bottom, crop_x:crop_right]
-    cv2.imwrite('website/uploads/cropped_image.jpg', cropped_img)
-
-    flash("Image Cropped", category="success")
-
-    print("Good So Far")
-
     try:
-        return jsonify({'success': True})
+        global image_name
+        data = request.json
+        image_name = data['imageName']
+        new_left = data['newLeft']
+        new_top = data['newTop']
+
+        image_name = image_name.replace("%20", " ")
+        image_name = image_name.rsplit("/", 1)[-1]
+
+        image = cv2.imread(f"website/uploads/{image_name}")
+        height = image.shape[0]
+        width = image.shape[1]
+
+        scaling_factor = width / 500  # Scaling factor from displayed image to actual image
+
+        overlay_left_on_actual_image = new_left * scaling_factor
+        overlay_top_on_actual_image = new_top * scaling_factor
+
+        crop_width = int(150 * scaling_factor)  # Width of the cropping rectangle
+        crop_height = int(150 * scaling_factor)  # Height of the cropping rectangle
+
+        # Calculate the cropping rectangle coordinates
+        crop_x = int(max(overlay_left_on_actual_image, 0))
+        crop_y = int(max(overlay_top_on_actual_image, 0))
+
+        # Calculate the right and bottom coordinates of the cropping rectangle
+        crop_right = int(min(crop_x + crop_width, width))  # Limit to image width
+        crop_bottom = int(min(crop_y + crop_height, height))  # Limit to image height
+
+        cropped_img = image[crop_y:crop_bottom, crop_x:crop_right]
+        cv2.imwrite('website/uploads/cropped_image.jpg', cropped_img)
+
+        flash("Image Cropped", category="success")
+
+        print("Good So Far")
+
+        try:
+            return jsonify({'success': True})
+        except Exception as e:
+            print("Error:", e)
+            return jsonify({'success': False})
     except Exception as e:
         print("Error:", e)
         return jsonify({'success': False})
