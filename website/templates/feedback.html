@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+<br><br><br>
+<h2 class="text-center" style="color: white;">Feedback</h2>
+<div class="row">
+	<div class="col-3"></div>
+	<div class="col-6">
+		<form method="POST">
+			<div class="mb-3">
+				<label for="title" class="form-label" style="color: white;">Title</label>
+				<input type="text" class="form-control" id="title" name="title" placeholder="title">
+			</div>
+			<div class="mb-3">
+				<label for="email" class="form-label" style="color: white;">Email address</label>
+				<input type="email" class="form-control" name="email" id="email"
+				       placeholder="name@example.com (not required)">
+			</div>
+			<div class="mb-3">
+				<label for="content" class="form-label" style="color: white;">Feedback</label>
+				<textarea class="form-control" id="content" name="content" rows="3"
+				          placeholder="Enter text here"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-outline-success">Submit</button>
+		</form>
+	</div>
+	<div class="col-3"></div>
+</div>
+<br><br><br>
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<ol class="list-group list-group-numbered">
+			{% for post in posts %}
+			<li class="list-group-item d-flex justify-content-between align-items-start">
+				<div class="ms-2 me-auto">
+					<div class="fw-bold">
+						{{ post.title }}
+					
+					</div>
+					
+					{{ post.content}}
+				</div>
+				<span class="badge bg-danger pill">{{ post.email }}</span>
+				<span class="badge bg-warning pill">{{ post.date }}</span>
+			</li>
+			{% endfor %}
+		
+		</ol>
+	</div>
+	<div class="col-2"></div>
+</div>
+
+{% endblock %}

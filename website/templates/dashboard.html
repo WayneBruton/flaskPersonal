@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<br><br><br>
+<h2 class="text-center" style="color: white;">Dashboard</h2>
+<br><br>
+<div class="row p-4">
+	<div class="card m-auto" style="width: 30%;">
+		<div class="card-body">
+			<div id="chart1"></div>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam consequatur, debitis dolor ducimus
+				facilis hic impedit nesciunt reprehenderit sed tempore.
+			</p>
+		</div>
+	</div>
+	<div class="card m-auto" style="width: 30%;">
+		<div class="card-body">
+			<div id="chart2"></div>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci alias corporis distinctio dolores
+				error inventore nisi praesentium provident qui suscipit?
+			</p>
+		</div>
+	</div>
+	
+	<div class="card m-auto" style="width: 30%;">
+		<div class="card-body">
+			<div id="chart3"></div>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium beatae consectetur dolore ducimus
+				eaque explicabo minus molestiae quibusdam tempora vero.
+			</p>
+		</div>
+	</div>
+
+</div>
+
+<!--plotly cdn-->
+<script src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
+<script>
+	var graph1 = {{ graph1JSON | safe }};
+	Plotly.newPlot('chart1', graph1, {});
+	
+	var graph2 = {{ graph2JSON | safe }};
+	Plotly.newPlot('chart2', graph2, {});
+	
+	var graph3 = {{ graph3JSON | safe }};
+	Plotly.newPlot('chart3', graph3, {});
+
+
+</script>
+{% endblock %}

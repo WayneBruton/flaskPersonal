@@ -30,5 +30,15 @@ class Note(db.Model):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    email = db.Column(db.String(150))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    content = db.Column(db.Text)
+
+
+class Feedback(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    email = db.Column(db.String(150))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     content = db.Column(db.Text)

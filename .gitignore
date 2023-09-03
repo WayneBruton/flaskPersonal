@@ -5,5 +5,7 @@ __pycache__
 
 # add website/static/uploads
 website/static/uploads
+# addwebsite/uploads
+website/uploads
 ```
 

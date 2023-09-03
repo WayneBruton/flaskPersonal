@@ -6,10 +6,13 @@ from flask import (Blueprint, render_template, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from . import db
-from .models import File, Post
+from .models import File, Post, Feedback
 import boto3
 import uuid
-
+import pandas as pd
+import json
+import plotly
+import plotly.express as px
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -137,6 +140,8 @@ def map():
                     <a class="nav-item nav-link mapA" id="uploads" href="/uploads">File Uploads</a>
                     <a class="nav-item nav-link mapA" id="s3example" href="/s3example">S3 example</a>
                     <a class="nav-item nav-link mapA" id="imagemanipulation" href="/imagemanipulation">Image Manipulation</a>
+                    <a class="nav-item nav-link" id="dashboard" href="/dashboard">Dashboard</a>
+                    <a class="nav-item nav-link mapA" id="nextup" href="/feedback">Feedback</a>
                     <a class="nav-item nav-link mapA" id="nextup" href="/nextup">What's Next</a>
                 </div>
             </div>
@@ -405,6 +410,51 @@ def cropped_image(filename):
     # filename = filename.split("/")[1]
     # print("filename", filename)
     return send_from_directory("uploads", filename)
+
+
+@views.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    if request.method == 'POST':
+        feedback = request.form
+        # post = Post(title=feedback['title'], email=feedback['email'], content=feedback['content'])
+        post = Feedback(title=feedback['title'], email=feedback['email'], content=feedback['content'])
+        db.session.add(post)
+        db.session.commit()
+        # get posts from database
+        posts = Feedback.query.order_by(Feedback.date.desc()).all()
+
+        # print(feedback)
+        flash('Feedback Submitted', category='success')
+        return redirect(url_for('views.feedback', posts=posts))
+
+    # db.session.query(Feedback).delete()
+    # db.session.commit()
+    posts = Feedback.query.order_by(Feedback.date.desc()).all()
+
+    return render_template('feedback.html', posts=posts)
+
+
+@views.route('/dashboard')
+def dashboard():
+    # graph1
+    df = px.data.medals_wide()
+    fig1 = px.bar(df, x="nation", y=["gold", "silver", "bronze"], title="Medals")
+    graph1JSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # graph2
+    df = px.data.gapminder().query("continent=='Oceania'")
+    fig2 = px.line(df, x="year", y="lifeExp", color='country', title='Life expectancy in Oceania')
+    graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # graph3
+    df = px.data.iris()
+    # fig3 = px.scatter_3d(df, x="sepal_width", y="sepal_length", color="species",
+    #                      size='petal_length', hover_data=['petal_width'])
+    fig3 = px.scatter_3d(df, x="sepal_width", y="sepal_length", z="petal_length", color="species",
+                         size='petal_width', hover_data=['petal_width'], title="Iris Data")
+    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('dashboard.html', graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON)
 
 
 def possible(grid, row, column, number):
