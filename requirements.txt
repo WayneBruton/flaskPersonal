@@ -7,7 +7,7 @@ folium~=0.14.0
 gunicorn
 numpy
 pandas
-plot
+plotly
 plotly-express
 python-dotenv~=1.0.0
 Werkzeug~=2.3.7
