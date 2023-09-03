@@ -140,7 +140,7 @@ def map():
                     <a class="nav-item nav-link mapA" id="uploads" href="/uploads">File Uploads</a>
                     <a class="nav-item nav-link mapA" id="s3example" href="/s3example">S3 example</a>
                     <a class="nav-item nav-link mapA" id="imagemanipulation" href="/imagemanipulation">Image Manipulation</a>
-                    <a class="nav-item nav-link" id="dashboard" href="/dashboard">Dashboard</a>
+                    <a class="nav-item nav-link mapA" id="dashboard" href="/dashboard">Dashboard</a>
                     <a class="nav-item nav-link mapA" id="nextup" href="/feedback">Feedback</a>
                     <a class="nav-item nav-link mapA" id="nextup" href="/nextup">What's Next</a>
                 </div>
