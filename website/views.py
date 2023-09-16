@@ -14,6 +14,13 @@ import json
 import plotly
 import plotly.express as px
 from dotenv import load_dotenv
+from website.config.db import db
+
+# print("db", db)
+
+## MONGO SETUP
+files_uploaded = db.files
+feedback_db = db.feedback
 
 load_dotenv()
 
@@ -30,6 +37,8 @@ def allowed_file(filename):
 
 @views.route("/", methods=["GET", "POST"])
 def home():
+    result = list(files_uploaded.find())
+    print("result", result)
     return render_template("home.html")
 
 
@@ -137,7 +146,6 @@ def map():
                     <a class="nav-item nav-link mapA" id="index" href="/index">About Me</a>
                     <a class="nav-item nav-link mapA" id="sudoku" href="/sudoku">Sudoku</a>
                     <a class="nav-item nav-link mapA" id="sudoku" href="/map">Map</a>
-                    <a class="nav-item nav-link mapA" id="uploads" href="/uploads">File Uploads</a>
                     <a class="nav-item nav-link mapA" id="s3example" href="/s3example">S3 example</a>
                     <a class="nav-item nav-link mapA" id="imagemanipulation" href="/imagemanipulation">Image Manipulation</a>
                     <a class="nav-item nav-link mapA" id="dashboard" href="/dashboard">Dashboard</a>
@@ -255,13 +263,22 @@ def s3example():
                 }
             )
             region = "eu-central-1"
-            file = File(original_fileName=uploaded_file.filename, fileName=new_fileName, bucket=bucket_name,
-                        region=region)
-            db.session.add(file)
-            db.session.commit()
+
+            insert = {
+                "original_fileName": uploaded_file.filename,
+                "fileName": new_fileName,
+                "bucket": bucket_name,
+                "region": region
+            }
+            response = files_uploaded.insert_one(insert)
+
             return redirect(url_for("views.s3example"))
 
-        files = File.query.all()
+        # files = File.query.all()
+        files = list(files_uploaded.find())
+        for file in files:
+            file["id"] = str(file["_id"])
+
         # for file in files:
         #     print(file.fileName)
 
@@ -282,9 +299,10 @@ def delete_file(id, filename):
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY
         )
         s3.delete_object(Bucket=bucket_name, Key=filename)
-        file = File.query.get(id)
-        db.session.delete(file)
-        db.session.commit()
+        file = files_uploaded.delete_one({"fileName": filename})
+        # file = File.query.get(id)
+        # db.session.delete(file)
+        # db.session.commit()
         return redirect(url_for("views.s3example"))
     except Exception as e:
         print("Error:", e)
@@ -417,19 +435,28 @@ def feedback():
     if request.method == 'POST':
         feedback = request.form
         # post = Post(title=feedback['title'], email=feedback['email'], content=feedback['content'])
-        post = Feedback(title=feedback['title'], email=feedback['email'], content=feedback['content'])
-        db.session.add(post)
-        db.session.commit()
-        # get posts from database
-        posts = Feedback.query.order_by(Feedback.date.desc()).all()
+        insert = {
+            "title": feedback['title'],
+            "email": feedback['email'],
+            "content": feedback['content'],
+            "date": datetime.now()
+        }
+        response = feedback_db.insert_one(insert)
+
+        # get feedback from database and order by newest first
+        posts = list(feedback_db.find().sort("date", -1))
+        for post in posts:
+            post["id"] = str(post["_id"])
+            del post["_id"]
 
         # print(feedback)
         flash('Feedback Submitted', category='success')
         return redirect(url_for('views.feedback', posts=posts))
 
-    # db.session.query(Feedback).delete()
-    # db.session.commit()
-    posts = Feedback.query.order_by(Feedback.date.desc()).all()
+    posts = list(feedback_db.find().sort("date", -1))
+    for post in posts:
+        post["id"] = str(post["_id"])
+        del post["_id"]
 
     return render_template('feedback.html', posts=posts)
 
