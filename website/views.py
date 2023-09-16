@@ -37,8 +37,8 @@ def allowed_file(filename):
 
 @views.route("/", methods=["GET", "POST"])
 def home():
-    # result = list(files_uploaded.find())
-    # print("result", result)
+    result = list(files_uploaded.find())
+    print("result", result)
     return render_template("home.html")
 
 
