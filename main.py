@@ -6,6 +6,9 @@ import os
 if not os.path.exists('website/uploads'):
     os.makedirs('website/uploads')
 
+if not os.path.exists('website/uploads/json'):
+    os.makedirs('website/uploads/json')
+
 app = create_app()
 
 if __name__ == '__main__':
