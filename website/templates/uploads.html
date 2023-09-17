@@ -29,7 +29,7 @@
 					<h5 class="card-title">{{ filename }}</h5>
 					<div style="display:flex; justify-content: space-around;">
 					
-					<a href="{{ url_for('views.download', filename=filename) }}" class="btn btn-primary">Download</a>
+					<a href="{{ url_for('views.uploaded_csv2json', filename=filename) }}" class="btn btn-primary">Download</a>
 					<a href="{{ url_for('views.delete', filename=filename) }}" class="btn btn-danger">Delete</a>
 				</div>
 			</div>

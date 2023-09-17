@@ -30,6 +30,7 @@
 	color: white;
 }
 
+
 a {
 	color: white;
 
@@ -111,6 +112,17 @@ transform: translateY(3px);
 	margin-top: 0;
 	transition: 0.5s;
 	animation: move-left-right-first 1s linear;
+}
+
+.intro {
+	background-color: rgba(0, 0, 0, 0.6);
+	padding: 20px;
+
+	color: white;
+	font-size: 15px;
+	border: 1px solid rgba(0, 0, 0, 0.6);
+	border-radius: 5px;
+	animation: move-left-right-first 1.5s linear
 }
 
 .meImg {

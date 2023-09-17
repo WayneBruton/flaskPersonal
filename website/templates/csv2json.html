@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}CSV2JSON{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="margin-top: 45px;">
+	<div class="row">
+		<div class="col-md-3"></div>
+		
+		
+		<div class="col-md-6">
+			
+			<br><br>
+			<h3 class="text-center" style="color: white">CSV to JSON Example</h3>
+			<p style="color: white;">Just a simple converter for converting CSV files to JSON files.<br><br>
+				I have not fussed too much about persistence and not saved the file to S3 nor referenced it in the database.
+				<br><br>
+				I used Pandas in this instance but there are several ways I could have accomplished this.
+				I could have used the csv module or even the json module.
+				
+				<br><br>
+				I actually use this a lot, especially taking data in csv and posting it to MongoDB.
+				
+				
+<!--				<strong>Issues:</strong> Ideally I should use a progress bar or such like while file is being uploaded to AWS S3.-->
+			</p>
+			<br><br>
+			<a href="https://github.com/WayneBruton/flaskPersonal/" target="_blank" style="color: white; text-decoration: underline; color: yellow;">Source Code</a>
+			<br><br>
+			<form method="POST" enctype="multipart/form-data">
+				<input class="text-bg-dark" type="file" name="file" id="fileInput" accept="text/csv"><br><br>
+				<button type="submit" class="btn btn-primary text-bg-dark" id="submitButton" >Upload</button>
+			</form>
+			<br><br>
+			
+			{% for file in filename %}
+			<div class="card  mb-12" style="margin-bottom: 2px;">
+				<div class="card-body" >
+					<h5 class="card-title">{{ file }}</h5>
+					<div style="display:flex; justify-content: space-around;">
+					
+					<a href="{{ url_for('views.download_json', filename=file) }}" class="btn btn-primary">Download</a>
+					<a href="{{ url_for('views.delete_json', filename=file) }}" class="btn btn-danger">Delete</a>
+				</div>
+			</div>
+			<br><br>
+			{% endfor %}
+		
+		
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+</div>
+{% endblock %}

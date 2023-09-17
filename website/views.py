@@ -149,6 +149,7 @@ def map():
                     <a class="nav-item nav-link mapA" id="s3example" href="/s3example">S3 example</a>
                     <a class="nav-item nav-link mapA" id="imagemanipulation" href="/imagemanipulation">Image Manipulation</a>
                     <a class="nav-item nav-link mapA" id="dashboard" href="/dashboard">Dashboard</a>
+                    <a class="nav-item nav-link" id="csv2json" href="/csv2json">CSV2JSON</a>
                     <a class="nav-item nav-link mapA" id="nextup" href="/feedback">Feedback</a>
                     <a class="nav-item nav-link mapA" id="nextup" href="/nextup">What's Next</a>
                 </div>
@@ -483,6 +484,65 @@ def dashboard():
 
     return render_template('dashboard.html', graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON)
 
+
+@views.route('/csv2json', methods=['GET', 'POST'])
+def csv2json():
+    if request.method == 'POST':
+        csv_file = request.files['file']
+        # get the filename
+        filename = secure_filename(csv_file.filename)
+
+        # remove the extension from the filename
+        filename = filename.rsplit(".", 1)[0]
+
+        df = pd.read_csv(csv_file)
+        json_data = df.to_json(orient='records')
+        # save json_data to website/uploads/json folder as json file
+        with open(f'website/uploads/json/{filename}.json', 'w') as f:
+            json.dump(json_data, f)
+        # attach json_data.json to render_template
+
+        files = os.listdir("website/uploads/json")
+        for file in files:
+            if file.endswith(".json"):
+                filename = file
+
+        if os.path.isfile(f"website/uploads/json/{filename}.json"):
+            flash("CSV File Uploaded", category="success")
+            # return the filename to the user
+            return render_template('csv2json.html', filename=files)
+        return render_template('csv2json.html', filename=files)
+
+        # print("json_data", json_data)
+    files = os.listdir("website/uploads/json")
+    for file in files:
+        if file.endswith(".json"):
+            filename = file
+
+    return render_template('csv2json.html', filename=files)
+
+
+@views.route("/download_json/<filename>")
+def download_json(filename):
+    exact_path = f"uploads/json/{filename}"
+    return send_file(exact_path, as_attachment=True)
+
+
+@views.route("/uploaded_csv2jsn/<filename>")
+def uploaded_csv2json(filename):
+    # print("filename", filename)
+    return send_from_directory("uploads/json", filename)
+
+
+@views.route("/delete_json/<filename>")
+def delete_json(filename):
+    os.remove(os.path.join("website/uploads/json", filename))
+    files = os.listdir("website/uploads/json")
+    flash("JSON File Deleted", category="error")
+    return redirect(url_for("views.csv2json", files=files))
+
+
+## SUDUKU SOLVER
 
 def possible(grid, row, column, number):
     # Is the number appearing in the given row?
