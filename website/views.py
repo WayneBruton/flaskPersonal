@@ -1,10 +1,13 @@
 import os
+import time
+
 import cv2
 import folium
 from flask import (Blueprint, render_template, request, jsonify, render_template_string, url_for,
                    redirect, send_file, flash, send_from_directory)
 from werkzeug.utils import secure_filename
 from datetime import datetime
+import openai
 from . import db
 from .models import File, Post, Feedback
 import boto3
@@ -15,6 +18,8 @@ import plotly
 import plotly.express as px
 from dotenv import load_dotenv
 from website.config.db import db
+from PyPDF2 import PdfReader
+from gtts import gTTS
 
 # print("db", db)
 
@@ -29,6 +34,8 @@ views = Blueprint("views", __name__)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
 bucket_name = "eccentrictoadperfectstaffbucket"
+
+openai.api_key = os.getenv("OPENI_API")
 
 
 def allowed_file(filename):
@@ -146,10 +153,12 @@ def map():
                     <a class="nav-item nav-link mapA" id="index" href="/index">About Me</a>
                     <a class="nav-item nav-link mapA" id="sudoku" href="/sudoku">Sudoku</a>
                     <a class="nav-item nav-link mapA" id="sudoku" href="/map">Map</a>
-                    <a class="nav-item nav-link mapA" id="s3example" href="/s3example">S3 example</a>
-                    <a class="nav-item nav-link mapA" id="imagemanipulation" href="/imagemanipulation">Image Manipulation</a>
+                    <a class="nav-item nav-link mapA" id="s3example" href="/s3example">S3</a>
+                 
                     <a class="nav-item nav-link mapA" id="dashboard" href="/dashboard">Dashboard</a>
                     <a class="nav-item nav-link mapA" id="csv2json" href="/csv2json">CSV2JSON</a>
+                    <a class="nav-item nav-link mapA" id="chatbotn" href="/chatbot">Chatbot</a>
+                    <a class="nav-item nav-link mapA" id="pdftext" href="/pdftext">TTS</a>
                     <a class="nav-item nav-link mapA" id="nextup" href="/feedback">Feedback</a>
                     <a class="nav-item nav-link mapA" id="nextup" href="/nextup">What's Next</a>
                 </div>
@@ -540,6 +549,48 @@ def delete_json(filename):
     files = os.listdir("website/uploads/json")
     flash("JSON File Deleted", category="error")
     return redirect(url_for("views.csv2json", files=files))
+
+
+@views.route("/chatbot", methods=["GET", "POST"])
+def chatbot():
+    if request.method == "POST":
+        user_input = request.form["message"]
+        prompt = f"User: {user_input}\nChatbot: "
+        chat_history = []
+        response = openai.Completion.create(
+            model="gpt-3.5-turbo-instruct",
+            prompt=prompt,
+
+        )
+        # print("response", response)
+        bot_response = response["choices"][0]["text"].strip()
+        chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
+        return render_template("chatbot.html", message=user_input, bot_response=bot_response)
+    return render_template("chatbot.html", message=None, bot_response=None)
+
+
+@views.route("/pdftext", methods=["GET", "POST"])
+def pdftext():
+    if os.path.isfile("website/uploads/story.mp3"):
+        os.remove("website/uploads/story.mp3")
+    if request.method == "POST":
+        extract = request.form['words']
+        # delete story.mp3 if it exists
+
+        language = 'en'
+        myobj = gTTS(text=extract, lang=language, slow=False, tld="co.za")
+        myobj.save(f"website/uploads/story.mp3")
+        mp3_filename = 'story.mp3'
+
+        return render_template("pdftext.html", text=extract, filename=mp3_filename)
+    extract = ("Just a basic text to speech example using gTTS. Feel free to change the text and click the \"Upload\" "
+               "button.")
+    return render_template("pdftext.html", text=extract, filename=None)
+
+
+@views.route("/uploaded_mp3/<filename>")
+def uploaded_mp3(filename):
+    return send_from_directory("uploads", filename)
 
 
 ## SUDUKU SOLVER

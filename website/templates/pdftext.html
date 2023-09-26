@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}PDF to Voice{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="margin-top: 45px;">
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<br><br>
+			<h3 class="text-center" style="color: white">TTS</h3>
+			<p style="color: white;">Just a simple converter for converting Text to Speech.<br><br>
+				I have not fussed too much about persistence and not saved the file to S3 nor referenced it in the
+				database.
+				<br><br>
+			
+			</p>
+			
+			<br><br>
+			
+			<form id="myForm" method="POST" enctype="multipart/form-data">
+				
+				<textarea id="texttospeech" name="words" rows="4" cols="80" style="text-align: left;overflow:auto;"
+				>{{ text }}
+				</textarea><br><br>
+				
+				<button type="submit" class="btn btn-primary text-bg-dark" id="submitButton">Upload</button>
+			</form>
+			<br><br>
+			<div id="spinner" class="spinner-border text-danger" role="status" style="display: none; align: center;">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+			
+			
+			{% if filename %}
+			<a id="atag" href="{{ url_for('views.uploaded_mp3', filename=filename) }}"
+			   class="btn btn-warning" target="_blank">Play</a>
+			{% endif %}
+		
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+</div>
+
+{% endblock %}
+		

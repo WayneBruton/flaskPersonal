@@ -5,12 +5,15 @@ Flask-Login
 Flask-SQLAlchemy
 folium~=0.14.0
 gunicorn
+gtts
 numpy
+openai
 pandas
 plotly
 plotly-express
 python-dotenv~=1.0.0
 pymongo
+pypdf2
 Werkzeug~=2.3.7
 opencv-python-headless
 

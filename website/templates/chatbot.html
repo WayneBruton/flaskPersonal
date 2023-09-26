@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Chatbot{% endblock %}
+
+{% block content %}
+<div class="container-fluid" style="margin-top: 45px;">
+	<div class="row">
+		<div class="col-md-3"></div>
+		
+		
+		<div class="col-md-6">
+			
+			
+			<br><br>
+			<h3 class="text-center" style="color: white">Chat with me</h3>
+			<p style="color: white;">As simple chatbot, using openAI, ask questions and it answers, definitely cannot
+				guarantee answers are
+				correct!!!!</p>
+			
+			{% if message %}
+			<p style="color: yellow;"><strong>You: </strong>{{ message }}</p>
+			<p style="color: wheat;"><strong>Answer: </strong>{{ bot_response }}</p>
+			{% endif %}
+			
+			<form method="POST" enctype="multipart/form-data">
+				<input class="text-bg-dark" type="text" name="message" placeholder="Ask a question"
+				       style="width: 75%">
+				<button type="submit" class="btn btn-primary text-bg-dark" id="submitButton">Send
+				</button>
+			</form>
+			<br><br>
+		
+		
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+</div>
+{% endblock %}
