@@ -29,21 +29,25 @@
 			</form>
 			<br><br>
 			{% for file in files %}
-			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title">New Name:{{ file.fileName }}</h5>
-					<h6 class="card-title">Old Name:{{ file.original_fileName }}</h6>
-					<h6 class="card-title">Region:{{ file.region }}</h6>
-					<h6 class="card-title">Bucket:{{ file.bucket }}</h6>
-					
-					<div style="display:flex; justify-content: space-around;">
-					
-					<a href="https://{{ file.bucket }}.s3.{{ file.region }}.amazonaws.com/{{ file.fileName }}" class="btn btn-primary" target="_blank">Download</a>
-					<a href="{{ url_for('views.delete_file', id=file.id, filename=file.fileName) }}" class="btn btn-danger">Delete</a>
+			
+				<div class="card" >
+					<div class="card-body" style="margin-bottom: 2px;">
+						<h5 class="card-title">New Name:{{ file.fileName }}</h5>
+						<h6 class="card-title">Old Name:{{ file.original_fileName }}</h6>
+						<h6 class="card-title">Region:{{ file.region }}</h6>
+						<h6 class="card-title">Bucket:{{ file.bucket }}</h6>
+						
+						<div style="display:flex; justify-content: space-around;">
+						
+						<a href="https://{{ file.bucket }}.s3.{{ file.region }}.amazonaws.com/{{ file.fileName }}" class="btn btn-primary" target="_blank">Download</a>
+						<a href="{{ url_for('views.delete_file', id=file.id, filename=file.fileName) }}" class="btn btn-danger">Delete</a>
+					</div>
 				</div>
-			</div>
-			<br>
+			
 			{% endfor %}
+			<br>
+			
+			
 		
 		
 		</div>

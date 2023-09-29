@@ -282,12 +282,21 @@ def s3example():
             }
             response = files_uploaded.insert_one(insert)
 
+            # files = list(files_uploaded.find())
+            # for file in files:
+            #     file["id"] = str(file["_id"])
+
+            # return render_template("s3example.html", files=files)
+
             return redirect(url_for("views.s3example"))
 
         # files = File.query.all()
         files = list(files_uploaded.find())
         for file in files:
             file["id"] = str(file["_id"])
+
+        # reverse the list
+        files = files[::-1]
 
         # for file in files:
         #     print(file.fileName)
@@ -310,9 +319,6 @@ def delete_file(id, filename):
         )
         s3.delete_object(Bucket=bucket_name, Key=filename)
         file = files_uploaded.delete_one({"fileName": filename})
-        # file = File.query.get(id)
-        # db.session.delete(file)
-        # db.session.commit()
         return redirect(url_for("views.s3example"))
     except Exception as e:
         print("Error:", e)
