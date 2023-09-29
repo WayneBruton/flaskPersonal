@@ -35,7 +35,7 @@
 	<div class="col-8">
 		<ol class="list-group list-group-numbered">
 			{% for post in posts %}
-			<li class="list-group-item d-flex justify-content-between align-items-start">
+			<li class="list-group-item d-flex justify-content-between align-items-start" style="margin-bottom: 2px;">
 				<div class="ms-2 me-auto">
 					<div class="fw-bold">
 						{{ post.title }}
@@ -44,7 +44,7 @@
 					
 					{{ post.content}}
 				</div>
-				<span class="badge bg-danger pill">{{ post.email }}</span>
+				<span class="badge bg-danger pill" style="margin-right: 2px;">{{ post.email }}</span>
 				<span class="badge bg-warning pill">{{ post.date }}</span>
 			</li>
 			{% endfor %}
