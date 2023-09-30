@@ -45,7 +45,7 @@
 					{{ post.content}}
 				</div>
 				<span class="badge bg-danger pill" style="margin-right: 2px;">{{ post.email }}</span>
-				<span class="badge bg-warning pill">{{ post.date }}</span>
+				<span class="badge bg-warning pill">{{ post.date[:10] }}</span>
 			</li>
 			{% endfor %}
 		
