@@ -6,6 +6,7 @@ Flask-SQLAlchemy
 folium~=0.14.0
 gunicorn
 gtts
+newsapi-python
 numpy
 openai
 pandas

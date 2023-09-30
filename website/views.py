@@ -21,6 +21,8 @@ from website.config.db import db
 from PyPDF2 import PdfReader
 from gtts import gTTS
 
+from newsapi import NewsApiClient
+
 # print("db", db)
 
 ## MONGO SETUP
@@ -597,6 +599,24 @@ def pdftext():
 @views.route("/uploaded_mp3/<filename>")
 def uploaded_mp3(filename):
     return send_from_directory("uploads", filename)
+
+
+@views.route("/news")
+def news():
+    newsapi = NewsApiClient(api_key=os.getenv("NEWS_API"))
+
+    top_headlines = newsapi.get_top_headlines(
+        # q='bitcoin',
+        # sources='bbc-news,the-verge',
+        # category='technology',
+        language='en',
+        # country='us'
+    )
+    # sources = newsapi.get_sources()
+    # print("top_headlines", top_headlines['articles'])
+    # newsapi = NewsApiClient(api_key='dcb1aad26e88428385fb0916aaa983b2')
+    # response = https://newsapi.org/v2/top-headlines?country=us&apiKey=dcb1aad26e88428385fb0916aaa983b2
+    return render_template("news.html", top_headlines=top_headlines['articles'])
 
 
 ## SUDUKU SOLVER

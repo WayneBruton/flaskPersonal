@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}S3Upload{% endblock %}
+
+{% block content %}
+<br><br><br>
+<div class="container-fluid" style="margin-top: 45px;">
+	<div class="row">
+		<div class="col-md-2"></div>
+		
+		
+		<div class="col-md-8">
+			<h2 class="text-center" style="color: white">News</h2>
+			<p style="color: white;">A simple news portal using the newsapi.org API. I have used the top headlines
+				endpoint. I could allow the user to choose a news type like sports or technology for example,
+				I could also allow the user to choose a country and language. I could also allow the user to
+				search for a specific topic. I could also allow the user to choose a news source.
+			
+			</p>
+			<br><br>
+			{% for article in top_headlines %}
+			<div class="card" style="width: 85%; margin: 5px 0px;">
+				<img src="{{article.urlToImage}}" class="card-img-top" alt="urlToImage">
+				<div class="card-body">
+					<h5 class="card-title">{{ article.title}}</h5>
+					<h6 class="card-subtitle mb-2 text-body-secondary">By: {{ article.author }} -
+						{{article.source['name']}}</h6>
+					<h6 class="card-subtitle mb-2 text-body-secondary">Published: {{article.publishedAt[:10] }}</h6>
+					<p class="card-text">{{ article.description}}</p>
+					<a href="{{ article.url }}" class="btn btn-secondary" target="_blank">View Article</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+</div>
+{% endblock %}
