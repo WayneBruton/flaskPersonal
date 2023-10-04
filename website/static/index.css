@@ -229,3 +229,65 @@ transform: translateY(3px);
     z-index: 100;
     cursor: move;
 }
+
+.main-group {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-around;
+padding: 0;
+  margin: 0;
+width: 100%;
+height: 70vh;
+overflow: auto;
+
+}
+
+ul.listgroup {
+	  list-style-type: none;
+  width: 100%;
+  height: 90%;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+   border: 1px solid black;
+	  border-radius: 5px;
+}
+
+
+.sub-group {
+ width: 24%;
+}
+
+.sub-sub-list {
+	  list-style-type: none;
+
+
+  width: 100%;
+  height: 90%;
+  overflow: auto;
+
+}
+
+.column-header {
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+}
+
+li.task {
+margin: 0px 0px;
+padding: 0px 0px;
+}
+
+.card.task-detail {
+	  margin: 0px 0px;
+  padding: 0px 0px;
+
+  cursor: pointer;
+
+}
+
+
+
+

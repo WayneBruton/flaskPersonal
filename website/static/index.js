@@ -619,6 +619,223 @@ document.getElementById('sendButton').addEventListener('click', () => {
 
 }
 
+//const tasks = document.querySelectorAll('.task'), card = document.querySelector('.card');
+//
+////console.log(tasks, card);
+//
+//tasks.forEach(task => {
+//	task.addEventListener('dragover', e => {
+//		e.preventDefault();
+//		task.classList.add('hovered');
+//	});
+//	task.addEventListener('dragleave', e => {
+//		e.preventDefault();
+//		task.classList.remove('hovered');
+//
+//	})
+//	task.addEventListener('drop', e => {
+//		e.preventDefault();
+//		task.appendChild(card);
+//		task.classList.remove('hovered');
+//	})
+//})
+
+
+// Function to attach drag-and-drop event listeners to a task element
+//function attachDragListeners(task) {
+//  task.addEventListener('dragstart', e => {
+//    // Store the task being dragged
+//    e.dataTransfer.setData('text/plain', task.outerHTML);
+//    task.classList.add('dragging');
+//  });
+//
+//  task.addEventListener('dragend', e => {
+//    // Remove the 'dragging' class when the drag operation ends
+//    task.classList.remove('dragging');
+//  });
+//}
+//
+//const tasks = document.querySelectorAll('.task-detail');
+//tasks.forEach(attachDragListeners);
+//
+//const lists = document.querySelectorAll('.task');
+//lists.forEach(list => {
+//  list.addEventListener('dragover', e => {
+//    e.preventDefault();
+//    list.classList.add('hovered');
+//  });
+//
+//  list.addEventListener('dragleave', e => {
+//    e.preventDefault();
+//    list.classList.remove('hovered');
+//  });
+//
+//  list.addEventListener('drop', e => {
+//    e.preventDefault();
+//    list.classList.remove('hovered');
+//
+//    // Get the HTML content of the dragged task
+//    const taskHTML = e.dataTransfer.getData('text/plain');
+//
+//    // Create a new task element from the HTML content
+//    const newTask = document.createElement('li');
+//    newTask.classList.add('task', 'text-center');
+//
+//    // Clear margin and padding for the new task
+//    newTask.style.margin = '0';
+//    newTask.style.padding = '0';
+//
+//    newTask.innerHTML = taskHTML;
+//
+//    // Append the new task to the list
+//    list.appendChild(newTask);
+//
+//    // Remove the original task from its parent
+//    const originalTask = document.querySelector('.dragging');
+//    originalTask.remove();
+//
+//    // Attach drag-and-drop listeners to the newly created task
+//    attachDragListeners(newTask);
+//  });
+//});
+
+//const cards = document.querySelectorAll('.card');
+//
+//cards.forEach(card => {
+//  card.addEventListener('dragstart', e => {
+//    // Store a reference to the dragged card
+//    e.dataTransfer.setData('text/plain', card.id);
+//  });
+//
+//  cards.forEach(dropTarget => {
+//    dropTarget.addEventListener('dragover', e => {
+//      e.preventDefault();
+//      dropTarget.classList.add('hovered');
+//    });
+//
+//    dropTarget.addEventListener('dragleave', e => {
+//      e.preventDefault();
+//      dropTarget.classList.remove('hovered');
+//    });
+//
+//    dropTarget.addEventListener('drop', e => {
+//      e.preventDefault();
+//      dropTarget.classList.remove('hovered');
+//
+//      // Get the ID of the dragged card
+//      const draggedCardId = e.dataTransfer.getData('text/plain');
+//      const draggedCard = document.getElementById(draggedCardId);
+//
+//      // Append the dragged card to the drop target
+//      dropTarget.appendChild(draggedCard);
+//    });
+//  });
+//});
+
+// Function to attach drag listeners to a task
+function attachDragListeners(task) {
+  task.addEventListener('dragstart', handleDragStart);
+  task.addEventListener('dragend', handleDragEnd);
+}
+
+// Function to handle the drag start event
+function handleDragStart(e) {
+  // Store the task being dragged
+  e.dataTransfer.setData('text/plain', this.outerHTML);
+  this.classList.add('dragging');
+}
+
+// Function to handle the drag end event
+function handleDragEnd(e) {
+  // Remove the 'dragging' class when the drag operation ends
+  this.classList.remove('dragging');
+}
+
+// Function to handle the drop event
+// Function to handle the drop event
+// Function to handle the drop event
+function handleDrop(e) {
+  e.preventDefault();
+  this.classList.remove('hovered');
+
+  // Get the HTML content of the dragged task
+  const taskHTML = e.dataTransfer.getData('text/plain');
+
+  // Create a new task element from the HTML content
+  const newTask = document.createElement('li');
+  newTask.classList.add('task', 'text-center');
+
+  // Clear margin and padding for the new task
+  newTask.style.margin = '0';
+  newTask.style.padding = '0';
+
+  newTask.innerHTML = taskHTML;
+
+  // Determine if the drop target is the same list
+  const isSameList = this.parentElement === document.querySelector('.dragging').parentElement;
+
+  if (isSameList) {
+    // Reorder the tasks within the same list
+    const originalTask = document.querySelector('.dragging');
+    originalTask.remove();
+
+    // Find the index of the drop target and insert the new task at that position
+    const dropIndex = Array.from(this.parentElement.children).indexOf(this);
+    this.parentElement.insertBefore(newTask, this.parentElement.children[dropIndex]);
+  } else {
+    // Append the new task to the list
+    this.appendChild(newTask);
+
+    // Remove any empty li elements in the parent list
+    const parentList = this.parentElement;
+    const emptyLiElements = Array.from(parentList.querySelectorAll('li')).filter(li => li.childElementCount === 0);
+    emptyLiElements.forEach(emptyLi => emptyLi.remove());
+
+    // Remove the original task from its parent
+    const originalTask = document.querySelector('.dragging');
+    if (originalTask.parentElement.childElementCount === 0) {
+      originalTask.parentElement.remove();
+    } else {
+      originalTask.remove();
+    }
+  }
+
+  // Attach drag-and-drop listeners to the newly created task
+  attachDragListeners(newTask);
+}
+
+
+// Select all task detail elements and attach drag listeners
+const tasks = document.querySelectorAll('.task-detail');
+tasks.forEach(attachDragListeners);
+
+// Select all task elements and add drop listeners
+const lists = document.querySelectorAll('.sub-sub-list');
+lists.forEach(list => {
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    list.classList.add('hovered');
+  });
+
+  list.addEventListener('dragleave', e => {
+    e.preventDefault();
+    list.classList.remove('hovered');
+  });
+
+  list.addEventListener('drop', handleDrop);
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 //});
 

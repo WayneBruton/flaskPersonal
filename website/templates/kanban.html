@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}S3Upload{% endblock %}
+
+{% block content %}
+<header>
+	<br><br><br>
+	<h2 class="text-center" style="color: white;"><span>Drag & Drop Kanban Board</span></h2>
+</header>
+
+<div class="add-task-container">
+	<input type="text" maxlength="12" id="taskText" placeholder="New Task..." onkeydown="if (event.keyCode == 13)
+                        document.getElementById('add').click()">
+	<button id="add" class="button add-button" onclick="addTask()">Add New Task</button>
+</div>
+
+<div class="main-container" style="margin: 25px 0px;">
+	<ul class="list-group main-group">
+		<li class="list-group-item sub-group" style="background-color: red;">
+			<div class="column-header">
+				<h4>To Do</h4>
+			</div>
+			<ul class="list-group  sub-sub-list" id="to-do">
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h5 class="card-title">Analysis</h5>
+							<p class="card-text">Some quick example.</p>
+						
+						</div>
+					</div>
+				</li>
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Coding</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Card Sorting</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Measure</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+			</ul>
+		</li>
+		
+		<li class="list-group-item sub-group" style="background-color: yellow;">
+			<div class="column-header">
+				<h4>Doing</h4>
+			</div>
+			<ul class="list-group sub-sub-list" id="doing">
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Hypothesis</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">User Testing</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Prototype</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+			</ul>
+		</li>
+		
+		<li class="list-group-item  sub-group" style="background-color: green;">
+			<div class="column-header">
+				<h4>Done</h4>
+			</div>
+			<ul class="list-group sub-sub-list" id="done">
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Ideation</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Sketches</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+			</ul>
+		</li>
+		
+		<li class="list-group-item active sub-group">
+			<div class="column-header">
+				<h4>Trash</h4>
+				
+				
+				<button type="button" class="btn btn-danger"
+				        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem; --bs-btn-margin-y: .25rem"
+				        onclick="emptyTrash()">
+					Delete
+				</button>
+			
+			</div>
+			<ul class="list-group sub-sub-list" id="trash">
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Interviews</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+				<li class="task text-center">
+					<div class="card task-detail" style="width: 100%;" draggable="true">
+						<div class="card-body">
+							<h6 class="card-title">Research</h6>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk
+								of the card's content.</p>
+						
+						</div>
+					</div>
+				</li>
+			
+			</ul>
+		
+		</li>
+	
+	</ul>
+</div>
+
+
+{% endblock %}
+```

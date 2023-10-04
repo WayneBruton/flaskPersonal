@@ -619,6 +619,11 @@ def news():
     return render_template("news.html", top_headlines=top_headlines['articles'])
 
 
+@views.route("/kanban")
+def kanban():
+    return render_template("kanban.html")
+
+
 ## SUDUKU SOLVER
 
 def possible(grid, row, column, number):
