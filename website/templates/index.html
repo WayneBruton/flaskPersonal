@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="col-2"></div>
 		<div class="col-8">
-			<h1 class="text-center mainH1" style="margin-top: 30px; color: white">About me</h1>
+			<h4 class="text-center mainH1" style="margin-top: 30px; color: white">About me</h4>
 			<div style="display:flex; justify-content: center;" class="meImg">
 				<img src="{{ url_for('static', filename='images/me.jpeg') }}" class="img-fluid text-center mainH1"
 				     style="border-radius: 5%; margin-top: 30px; margin-bottom: 30px;">
@@ -52,6 +52,52 @@
 				regretted my decision to change careers. I was fortunate enough to be able to work for a company that
 				allowed me to code as my full-time job and I have never looked back.
 				<br/><br>
+				Having worked for many years as a financial manager, I feel it gives me a slight edge over developers that don’t necessarily grasp the needs of the client.
+<br />
+I have designed an ERP app for my employer from scratch that does the following:
+
+<br /><br />
+<strong>INVESTORS</strong><br />
+Load investors with all their details.<br />
+Allocated Investors to construction units.<br />
+Calculate daily interest earned.<br />
+Create loan agreements when new investor comes on board or current investor “rolls over” into new investments.<br />
+Investor statements  download / email<br />
+Commission calculations for investment consultants<br />
+numerous reports in PDF and Excel<br />
+<br /><br />
+<strong>CONSTRUCTION</strong><br />
+Manage subcontractors on the build sites<br />
+Manage Quality control questionnaires with subcontractors to evaluate their work.<br />
+Subcontractor valuations on work done<br />
+Creation of payment advices for subcontractors<br />
+numerous reports in PDF and Excel<br />
+<br /><br />
+
+<strong>SALES</strong><br />
+Monitor sales process through from offer to purchase to final transfer of the property with milestones<br />
+Monitor sales people and who sold the unit.<br />
+Monitor costs of sales like bond costs / transfer fees etc.<br />
+Reports to ascertain final nett profit as well as final settlement to investors invested in the unit.<br />
+<br /><br />
+<strong>MARKETING (LEAD GENERATION)</strong><br />
+Populate the database with leads generated.<br />
+This is for investments as well as sales.<br />
+Leads from Facebook / Instagram / WhatsApp get forwarded to landing page with a form.<br />
+Leads from the investment website populate the database directly.<br />
+Leads from the property website as well as from property24 get emailed to an address and emails are scraped and database is populated.<br />
+Each sales person gets allocated the leads on a round robin basis, the lead gets an email informing them which sales person will be in contact with them.<br />
+Sales people get an email as well as an SMS to facilitate quick fast service.<br />
+Leads are visible in the app where sales people fill in action taken, rate the lead etc.<br />
+leads are also shown graphically so we can monitor lead source etc.<br />
+<br /><br />
+
+I have also created an investor portal where investors can log into the app and view their investments.<br />
+
+The ERP system has roughly 25 regular users (in house staff) and the investor portal has roughly 300 individual investors with investments of roughly R400 million (ZAR)<br />
+
+The front end for all apps are written in VueJS (Vue 3 with composition API), the backends are a mixture of NodeJS and Python. I am currently looking to convert 100% to Python. We use MongoDB as the database (We were on MySQL but converted to mongo due to faster development time)<br /><br />
+
 				<strong>My Aspirations:</strong> To be 100% remote and to be able to work from anywhere in the
 				world.
 <!--				<br/><br>-->
